@@ -16,9 +16,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <UserProvider>
-        <body className='h-full w-full bg-gray-200 flex flex-col justify-center items-center'>
-          <Nav/>
-          {children}
+        <body>
+          <div className="main_bg">
+            <div className='main_gradient'/>
+          </div>
+          <main className='app_'>
+            <Nav/>
+            {children}
+          </main>
         </body>
       </UserProvider>      
     </html>

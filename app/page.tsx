@@ -1,19 +1,16 @@
-'use client';
-import { useUser } from '@auth0/nextjs-auth0/client';
+"use client"
+
+import { useUser } from "@auth0/nextjs-auth0/client"
 
 export default function Index() {
-  const { user, error, isLoading } = useUser();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
+  const { user } = useUser()
 
-  if (user) {
-    return (
-      <div>
-        Welcome {user.name}! <a href="/api/auth/logout">Logout</a>
-      </div>
-    );
-  }
-
-  return <a href="/api/auth/login">Login</a>;
+  return (
+    <section className="w-full max-w-screen-2xl h-screen min-h-full bg-slate-500 bg-opacity-30 flex flex-col items-center pt-4 px-4">
+      <h1 className="text-3xl font-extrabold">
+        Welcome{user?.name ? " " + user.name : null}, to the Pokemon Deckbuilder! 
+      </h1>
+    </section>
+  )
 }
