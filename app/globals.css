@@ -9,7 +9,7 @@
 }
 
 .app_ {
-  @apply relative z-10 flex justify-center items-center flex-col max-w-7xl mx-auto sm:px-6 lg:px-10 text-white;
+  @apply relative z-10 flex items-center flex-col max-w-7xl mx-auto sm:px-6 lg:px-10 text-white h-screen;
 }
 
 .main_bg {
