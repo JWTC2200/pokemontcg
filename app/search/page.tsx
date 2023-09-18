@@ -12,8 +12,6 @@ const Search = () => {
         mark: "",
     })
 
-    console.log(cardData)
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery((prev) => {
             return (
@@ -50,23 +48,9 @@ const Search = () => {
         )
     })
 
-    const getSets = async ()=> {
-        try {
-            const res = await fetch("api/testing")
-            const data = await res.json()
-            console.log(data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
 
     return (
         <section className="w-full max-w-screen-2xl h-full bg-slate-500 bg-opacity-30 flex flex-col items-center pt-4 px-4">
-            <button onClick={() => getSets()}>
-                TEST
-            </button>
-
             <form 
                 className='text-black flex flex-col items-start'
                 onSubmit={handleSubmit}
