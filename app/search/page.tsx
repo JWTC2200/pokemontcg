@@ -1,12 +1,14 @@
 "use client"
 
 import React, { useState } from 'react'
+import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 import { TCardData, TQuery } from '../types/types'
+import Card from '../components/Card'
 
 
 const Search = () => {
     const [searching, setSearching] = useState(false)
-    const [cardData, setCardData] = useState<TCardData>([])
+    const [cardData, setCardData] = useState<[PokemonTCG.Card]|[]>([])
     const [searchQuery, setSearchQuery] = useState<TQuery>({
         name: "",
         mark: "",
@@ -41,16 +43,16 @@ const Search = () => {
 
     const dataEl = cardData.map(card => {
         return (
-            <img 
+            <Card
                 key={card.id}
-                src={card.images.small}
+                {...card}
             />
         )
     })
 
 
     return (
-        <section className="w-full max-w-screen-2xl h-full bg-slate-500 bg-opacity-30 flex flex-col items-center pt-4 px-4">
+        <section className="page_container">
             <form 
                 className='text-black flex flex-col items-start'
                 onSubmit={handleSubmit}
