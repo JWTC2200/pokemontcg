@@ -1,7 +1,5 @@
-import pokemon from 'pokemontcgsdk'
+import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 import { headers } from "next/headers"
-
-pokemon.configure({apiKey: process.env.POKEMONAPI_KEY})
 
 export const GET = async (request: Request) => {
     const headersList = headers()
@@ -9,7 +7,8 @@ export const GET = async (request: Request) => {
     const mark = headersList.get("mark") ? `regulationMark:${headersList.get("mark")}` : "" 
 
     try {
-        const res = await pokemon.card.where({ q: `${name} ${mark} legalities.standard:legal`})
+        // const res = await PokemonTCG.Card.where({ q: `${name} ${mark} legalities.standard:legal`})
+        const res = await PokemonTCG.findCardsByQueries({ q: `${name} ${mark} legalities.standard:legal` })
         if(!res) return new Response("Card not found", {status: 404})
         return new Response(JSON.stringify(res), {status: 201})
     } catch (error) {

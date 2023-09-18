@@ -1,8 +1,6 @@
 "use client"
 
 import { useUser } from "@auth0/nextjs-auth0/client"
-import { findCard } from "./pokemon/pokemon"
-import { useRouter } from "next/router"
 import Link from "next/link"
 import React from "react"
 

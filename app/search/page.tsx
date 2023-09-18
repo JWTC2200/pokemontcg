@@ -12,7 +12,7 @@ const Search = () => {
         mark: "",
     })
 
-    console.log(searchQuery)
+    console.log(cardData)
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery((prev) => {
@@ -33,7 +33,8 @@ const Search = () => {
                 }
             })
             const data = await res.json()
-            setCardData(data.data)
+            console.log(data)
+            setCardData(data)
         } catch (error) {
             console.log(error)
         }
