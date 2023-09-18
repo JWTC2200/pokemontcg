@@ -32,7 +32,7 @@ const CardSets = () => {
     useEffect(() => {
         const getAllSets = async () => { 
             try {
-                const res = await fetch("api/cardsets")
+                const res = await fetch("/api/cardsets")
                 const data:[PokemonTCG.Set] = await res.json()
                 setCardSets(data)
                 setCardSeries(Array.from(new Set(data.map(set => set.series))))
@@ -42,16 +42,6 @@ const CardSets = () => {
         }
         getAllSets()
     }, []) 
-
-    const testing = async () => { 
-        try {
-            const res = await fetch("api/cardsets")
-            const data = await res.json()
-            console.log(data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     return (
         <section className='page_container'>

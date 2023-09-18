@@ -1,6 +1,6 @@
 import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 
-export const GET = async ({params}: {params:{id:string}}) => {
+export const GET = async (req:Request, {params}: {params:{id:string}}) => {
     try {
         const res = await PokemonTCG.findCardByID(params.id)
         if(!res) return new Response("Card not found", {status: 404})
@@ -8,4 +8,6 @@ export const GET = async ({params}: {params:{id:string}}) => {
     } catch (error) {
         console.log(error)
     }
+
 }
+
