@@ -7,7 +7,7 @@ import Link from "next/link"
 import React from "react"
 
 
-export default function Index({ children }: {children: React.ReactNode}) {
+export default function Index() {
 
   const { user } = useUser()
 
@@ -25,7 +25,6 @@ export default function Index({ children }: {children: React.ReactNode}) {
           </Link>
         : null
       }
-      { children}
     </section>
   )
 }
