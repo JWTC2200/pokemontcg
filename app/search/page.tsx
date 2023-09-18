@@ -1,16 +1,26 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { TCardData, TQuery } from '../types/types'
 
 
 const Search = () => {
     const [searching, setSearching] = useState(false)
     const [cardData, setCardData] = useState<TCardData>([])
-    const [searchQuery, SearchQuery] = useState<TQuery>({
+    const [searchQuery, setSearchQuery] = useState<TQuery>({
         name: "",
         mark: "",
     })
+
+    console.log(searchQuery)
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery((prev) => {
+            return (
+                {...prev, [e.target.id]: e.target.value}
+            )
+        })
+    }
 
     const handleSubmit = async (e: React.SyntheticEvent) => { 
         e.preventDefault()
@@ -18,7 +28,8 @@ const Search = () => {
         try {
             const res = await fetch(`api/cards?name=hiho`, {
                 headers: {
-                    name: searchQuery.name                    
+                    name: searchQuery.name,
+                    mark: searchQuery.mark                   
                 }
             })
             const data = await res.json()
@@ -38,8 +49,23 @@ const Search = () => {
         )
     })
 
+    const getSets = async ()=> {
+        try {
+            const res = await fetch("api/testing")
+            const data = await res.json()
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     return (
         <section className="w-full max-w-screen-2xl h-full bg-slate-500 bg-opacity-30 flex flex-col items-center pt-4 px-4">
+            <button onClick={() => getSets()}>
+                TEST
+            </button>
+
             <form 
                 className='text-black flex flex-col items-start'
                 onSubmit={handleSubmit}
@@ -49,7 +75,8 @@ const Search = () => {
                     <input 
                         id="name" 
                         placeholder='Card name'
-                        onChange={(e)=>SearchQuery({...searchQuery, name:e.target.value})}
+                        onChange={(e)=>handleChange(e)}
+                        value={searchQuery.name}
                     />
                 </div>
                 <div>
@@ -57,7 +84,8 @@ const Search = () => {
                     <input 
                         id="mark" 
                         placeholder='Regulation mark'
-                        onChange={(e)=>SearchQuery({...searchQuery, mark:e.target.value})}
+                        onChange={(e)=>handleChange(e)}
+                        value={searchQuery.mark}
                     />
                 </div>
                 <button

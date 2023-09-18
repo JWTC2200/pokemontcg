@@ -13,5 +13,5 @@ export type TCardData = [] |
 
 export type TQuery = {
     name: string,
-    mark: string | null
-}
+    mark: string,
+} 
