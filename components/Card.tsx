@@ -8,7 +8,7 @@ const Card = ({images, id, name, set}: PokemonTCG.Card) => {
     >
         <img
             src={images.small}
-            className='cursor-pointer'
+            className='cursor-pointer hover:scale-105 card_outline'
             onClick={()=>{console.log(id)}}
         />
     </Link>

@@ -1,7 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { UserProvider } from '@auth0/nextjs-auth0/client'
-import Nav from './components/Nav'
+import Nav from '../components/Nav'
 
 export const metadata: Metadata = {
   title: 'PokemonTCG Deck Builder',

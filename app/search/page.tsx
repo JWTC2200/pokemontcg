@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 import { TCardData, TQuery } from '../types/types'
-import Card from '../components/Card'
+import Card from '../../components/Card'
 
 
 const Search = () => {
@@ -83,7 +83,7 @@ const Search = () => {
                     Search
                 </button>
             </form>
-            <section className='flex flex-wrap gap-2 justify-center'>
+            <section className='flex flex-wrap gap-4 justify-center'>
                 {dataEl}
             </section>
         </section>

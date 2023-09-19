@@ -28,7 +28,7 @@ const CardSets = () => {
         </div>
         )
 
-
+    //get up to date list of series and card sets to create menus
     useEffect(() => {
         const getAllSets = async () => { 
             try {

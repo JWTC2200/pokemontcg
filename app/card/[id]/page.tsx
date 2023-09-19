@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
-import Card from '@/app/components/Card'
+import Card from '@/components/Card'
 
 const SingleCard = () => {
 

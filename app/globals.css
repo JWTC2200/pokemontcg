@@ -9,7 +9,7 @@
 }
 
 .app_ {
-  @apply relative z-10 flex items-center flex-col max-w-7xl mx-auto sm:px-6 lg:px-10 text-white h-screen;
+  @apply relative z-10 flex items-center flex-col mx-auto sm:px-6 lg:px-10 text-white h-screen;
 }
 
 .page_container {
@@ -27,7 +27,7 @@
 }
 
 .main_bg:before {
-  background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #aebfc6 100%);
+  background: radial-gradient(circle, rgba(2, 0, 36, 0) 1, #aebfc6 100%);
   position: absolute;
   content: "";
   z-index: 2;
@@ -73,3 +73,15 @@
   opacity: 0.15;
 }
 
+.dropdown_menu {
+  @apply absolute right-0 top-full mt-3 w-full p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2 justify-end items-end
+}
+
+.dropdown_link {
+  @apply text-black hover:scale-110 hover:before:content-["-"] hover:after:content-["-"]
+}
+
+.card_outline:hover {
+  box-shadow: 0 0 5px 4px #fff;
+  border-radius: 0.75rem
+}
