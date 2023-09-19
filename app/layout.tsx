@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { UserProvider } from '@auth0/nextjs-auth0/client'
 import Nav from '../components/Nav'
+import SetContextProvider from '@/components/SetContext'
 
 export const metadata: Metadata = {
   title: 'PokemonTCG Deck Builder',
@@ -20,10 +21,12 @@ export default function RootLayout({
           <div className="main_bg">
             <div className='main_gradient'/>
           </div>
-          <main className='app_'>
-            <Nav/>
-            {children}
-          </main>
+          <SetContextProvider>
+            <main className='app_'>
+              <Nav/>
+              {children}
+            </main>
+          </SetContextProvider>          
         </body>
       </UserProvider>      
     </html>

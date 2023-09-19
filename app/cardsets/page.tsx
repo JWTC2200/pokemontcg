@@ -1,10 +1,13 @@
 "use client"
 
-import { useState, useEffect} from 'react'
+import { useState, useEffect, useContext} from 'react'
 import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 import Card from '@/components/Card'
+import { CardSetContext } from '@/components/SetContext'
 
 const CardSets = () => {
+
+    const AllCardSets = useContext(CardSetContext)
 
     const [cardSeries, setCardSeries] = useState<[]|string[]>([])
     const [selectedSeries, setSelectedSeries] = useState("")
@@ -53,25 +56,21 @@ const CardSets = () => {
         setLoading((prev) => ({...prev, cards:false}))
     }
 
-    //get up to date list of series and card sets to create menus
+    //get up to date list of series and card sets from context to create menus
     useEffect(() => {
-        const getAllSets = async () => {
-            setLoading((prev) => ({...prev, series:true})) 
-            try {
-                const res = await fetch("/api/cardsets")
-                const data:[PokemonTCG.Set] = await res.json()
-                const sortedData = data.sort(function(a,b){
-                    return Number(new Date(a.releaseDate)) - Number(new Date(b.releaseDate))
-                })
-                setCardSets(sortedData)
-                setCardSeries(Array.from(new Set(sortedData.map(set => set.series))))
-            } catch (error) {
-                console.log(error)
-            }
-            setLoading((prev) => ({...prev, series:false}))
+        const getAllSets = () => {
+            !AllCardSets.length
+                ? setLoading((prev)=>({...prev, series:true}))
+                : setLoading((prev)=>({...prev, series:false}))
+
+            const sortedSets = AllCardSets.sort(function(a,b){
+                return Number(new Date(a.releaseDate)) - Number(new Date(b.releaseDate))
+            })
+            setCardSets(sortedSets)
+            setCardSeries(Array.from(new Set(sortedSets.map(set => set.series))))
         }
         getAllSets()
-    }, []) 
+    }, [AllCardSets]) 
 
     return (
         <section className='page_container gap-4'>

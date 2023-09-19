@@ -41,14 +41,12 @@ const Search = () => {
         setSearching(false)
     }
 
-    const dataEl = cardData.map(card => {
-        return (
-            <Card
-                key={card.id}
-                {...card}
-            />
-        )
-    })
+    const dataEl = cardData.map(card => 
+        <Card
+            key={card.id}
+            {...card}
+        />
+    )
 
 
     return (
