@@ -26,6 +26,10 @@ const SetContextProvider = ({children}: {children: React.ReactNode}) => {
       }
       getAllSets()
     }, [])
+
+    const ContextValues = {
+        cardsets: allSets
+    }
     
     return (
         <CardSetContext.Provider value={allSets}>

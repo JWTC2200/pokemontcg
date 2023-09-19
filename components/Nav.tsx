@@ -4,6 +4,7 @@ import { useUser } from "@auth0/nextjs-auth0/client"
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { BsFillFilePersonFill } from "react-icons/bs"
 
 
 const Nav = () => {
@@ -86,11 +87,11 @@ const Nav = () => {
               }
             </div>
             : <Link
-              className="red_btn"
+              className=""
               href="/cardsets"
               onClick={()=> setMenuToggle(false)}
             >
-              Sign In
+              <BsFillFilePersonFill className="text-2xl"/>
             </Link>
           }
         </section>

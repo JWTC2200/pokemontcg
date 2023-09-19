@@ -19,16 +19,18 @@ const CardSets = () => {
     const cardSeriesOp = cardSeries.map(series => 
         <option 
             key={series}
-            onClick={()=>setSelectedSeries(series)}
+            value={series}
         >
             {series}
         </option>
     )
 
+    console.log(cardSeries)
+
     const cardSetOp = cardSets?.filter(set => set.series === selectedSeries).map(filtered => 
         <option
             key={filtered.id}
-            onClick={()=>setSelectedSet(filtered.id)}
+            value={filtered.id}
         >
             {filtered.name} {`(${filtered.total} cards)`}
         </option>
@@ -78,8 +80,13 @@ const CardSets = () => {
                 ? <div>...loading</div>
                 : <div className='flex gap-2'>
                     <label htmlFor="series-select">Choose a series</label>
-                    <select name="series-select" id="series-select" className='text-black'>
-                        <option onClick={()=>setSelectedSeries("")}>Choose a series</option>
+                    <select 
+                        name="series-select" 
+                        id="series-select" 
+                        className='text-black' 
+                        onChange={(e)=>setSelectedSeries(e.target.value)}
+                    >
+                        <option value={""}>Choose a series</option>
                         {cardSeriesOp}
                     </select>
                 </div>
@@ -88,8 +95,13 @@ const CardSets = () => {
                 ? <div className='flex flex-col items-center'>
                      <div className='flex gap-2'>
                         <label htmlFor="set-select">Choose a set</label>
-                        <select name="set-select" id="set-select" className='text-black'>
-                            <option onClick={()=>setSelectedSet("")}>Choose a set</option>
+                        <select 
+                            name="set-select" 
+                            id="set-select" 
+                            className='text-black'
+                            onChange={(e)=>setSelectedSet(e.target.value)}
+                        >
+                            <option value={""}>Choose a set</option>
                             {cardSetOp}
                         </select>
                     </div>
