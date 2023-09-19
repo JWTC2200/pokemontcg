@@ -25,7 +25,7 @@ const CardSets = () => {
     const cardSetOp = cardSets?.filter(set => set.series === selectedSeries).map(filtered => 
         <option
             key={filtered.id}
-            onClick={()=>getSetCards(filtered.id)}
+            onClick={()=>setSelectedSet(filtered.id)}
         >
             {filtered.name} {`(${filtered.total} cards)`}
         </option>
@@ -38,9 +38,7 @@ const CardSets = () => {
         />
     )
 
-    const getSetCards = async (id:string)=>{
-        setSelectedSet(id)
-        console.log(id)
+    const getSetCards = async ()=>{
         setLoading((prev) => ({...prev, cards:true}))
         try {
             const res = await fetch(`api/cardsets/${selectedSet}`)
@@ -63,7 +61,7 @@ const CardSets = () => {
                 const res = await fetch("/api/cardsets")
                 const data:[PokemonTCG.Set] = await res.json()
                 const sortedData = data.sort(function(a,b){
-                    return new Date(a.releaseDate) - new Date(b.releaseDate)
+                    return Number(new Date(a.releaseDate)) - Number(new Date(b.releaseDate))
                 })
                 setCardSets(sortedData)
                 setCardSeries(Array.from(new Set(sortedData.map(set => set.series))))
@@ -88,19 +86,28 @@ const CardSets = () => {
                 </div>
             }
             { selectedSeries
-                ? <div className='flex gap-2'>
-                    <label htmlFor="set-select">Choose a set</label>
-                    <select name="set-select" id="set-select" className='text-black'>
-                        <option onClick={()=>setSelectedSet("")}>Choose a set</option>
-                        {cardSetOp}
-                    </select>
-                </div>
+                ? <div className='flex flex-col items-center'>
+                     <div className='flex gap-2'>
+                        <label htmlFor="set-select">Choose a set</label>
+                        <select name="set-select" id="set-select" className='text-black'>
+                            <option onClick={()=>setSelectedSet("")}>Choose a set</option>
+                            {cardSetOp}
+                        </select>
+                    </div>
+                    <button 
+                        type="button"
+                        className='red_btn'
+                        onClick={()=>getSetCards()}
+                    >
+                        Search
+                    </button>
+                </div>              
                 : null
             }
             { loading.cards
                 ? <div>...loading</div>
                 :  setCards 
-                    ? <div className='flex flex-wrap gap-4'>
+                    ? <div className='flex flex-wrap gap-4 justify-center'>
                     {allCardEl} </div>
                     : null                
             }   

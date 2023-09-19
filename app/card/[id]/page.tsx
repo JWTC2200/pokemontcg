@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
-import Card from '@/components/Card'
+import Link from 'next/link'
 
 const SingleCard = () => {
 
@@ -23,12 +23,44 @@ const SingleCard = () => {
         getSingleCard()
     }, [])
 
-    
+    console.log(cardData)
 
     return (
         <section className='page_container'>
             {cardData
-            ? <Card {...cardData}/>
+            ? <div className="flex flex-col md:flex-row md:justify-between w-full border border-black">
+                <section className="border w-full">
+                    <img 
+                        src={cardData.images.large} 
+                        className="w-96 pt-4"
+                    />
+                </section>
+                <section className="border w-full px-2">
+                    <h1 className="text-center">{cardData.name}</h1>
+                    <p>{cardData.supertype} {cardData.subtypes[0]}</p>
+                    {cardData.evolvesFrom 
+                        ? <p>Evolves from: <Link 
+                            className="underline hover:font-semibold"
+                            href={`/search?name=${cardData.evolvesFrom}`}
+                        >
+                            {cardData.evolvesFrom}
+                        </Link></p> 
+                        : null 
+                    }
+                    {cardData.evolvesTo 
+                        ? <p>Evolves from: <Link 
+                            className="underline hover:font-semibold"
+                            href={`/search?name=${cardData.evolvesTo}`}
+                        >
+                            {cardData.evolvesTo}
+                        </Link></p> 
+                        : null 
+                    }
+                </section>
+                <section className="border w-full">
+                    prices
+                </section>
+            </div>
             : null
             
         

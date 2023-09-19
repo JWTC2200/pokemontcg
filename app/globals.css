@@ -9,11 +9,11 @@
 }
 
 .app_ {
-  @apply relative z-10 flex items-center flex-col mx-auto sm:px-6 lg:px-10 text-white h-screen;
+  @apply relative z-10 flex items-center flex-col mx-auto sm:px-6 lg:px-10 text-slate-50;
 }
 
 .page_container {
-  @apply w-full max-w-screen-2xl h-full bg-slate-500 bg-opacity-30 flex flex-col items-center pt-4 px-4
+  @apply w-full max-w-screen-2xl flex flex-col items-center pt-4 px-4
 }
 
 .main_bg {
