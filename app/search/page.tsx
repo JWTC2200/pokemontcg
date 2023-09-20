@@ -56,8 +56,9 @@ const Search = () => {
     }, [])
 
     const handleParams = ()=> {
-        const keys = Object.keys(searchQuery)
-        keys.forEach((key:PropertyKey) => {
+        const keys = Object.keys(searchQuery) as Array<keyof typeof searchQuery>
+        console.log(searchQuery)
+        keys.forEach((key) => {
             if (searchQuery[key]) {
                 params.set(key, searchQuery[key])
             }
