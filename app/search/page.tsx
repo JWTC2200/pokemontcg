@@ -12,7 +12,7 @@ const Search = () => {
 
     const AllCardSets = useContext(CardSetContext)
     const sortedCardSets = AllCardSets.sort(function(a,b){
-        return Number(new Date(a.releaseDate)) - Number(new Date(b.releaseDate))
+        return Number(new Date(b.releaseDate)) - Number(new Date(a.releaseDate))
     })
 
     const params = new URLSearchParams()
@@ -244,7 +244,10 @@ const Search = () => {
                     <select
                         id="set.series"
                         name='set.series'
-                        onChange={(e)=>handleChange(e)}
+                        onChange={(e)=>{
+                            handleChange(e)
+                            setSearchQuery((prev) => ({...prev, ["set.name"]: "" }))
+                        }}
                         value={searchQuery["set.series"]}
                     >
                         <option value={""} defaultValue={""}>Choose card set series:</option>
