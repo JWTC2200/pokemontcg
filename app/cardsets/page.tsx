@@ -25,8 +25,6 @@ const CardSets = () => {
         </option>
     )
 
-    console.log(cardSeries)
-
     const cardSetOp = cardSets?.filter(set => set.series === selectedSeries).map(filtered => 
         <option
             key={filtered.id}
