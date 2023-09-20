@@ -15,7 +15,6 @@ const Search = () => {
         return Number(new Date(a.releaseDate)) - Number(new Date(b.releaseDate))
     })
 
-
     const params = new URLSearchParams()
     const router = useRouter()
     const searchParams = Array.from(useSearchParams().entries())
@@ -37,6 +36,8 @@ const Search = () => {
         "set.series": "",
         "set.name": ""
     })
+
+    console.log(searchQuery)
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setSearchQuery((prev) => {
@@ -89,7 +90,7 @@ const Search = () => {
             searchParams.forEach(param => queryString += `${param[0]}:"${param[1]}" `)
             fetchCards(queryString)
         }
-    }, [])
+    }, [AllCardSets])
 
     // set the search params
     const handleParams = ()=> {
