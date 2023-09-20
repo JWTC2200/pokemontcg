@@ -5,6 +5,7 @@ import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { TQuery } from '../types/types'
 import Card from '../../components/Card'
+import { cardSubtypesList } from '@/data/carddata'
 
 const Search = () => {
 
@@ -18,22 +19,30 @@ const Search = () => {
     const [searchQuery, setSearchQuery] = useState<TQuery>({
         name:"",
         regulationMark: "",
+        subtypes: "",
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery((prev) => {
             return (
-                {...prev, [e.target.name]: e.target.value}
+                {...prev, [e.target.name]: `${e.target.value}`}
             )
         })
     }
-
 
     const handleSubmit = (e:React.SyntheticEvent) => {
         e.preventDefault()
         handleParams()
         router.push(`/search?${params.toString()}`)
-        const queryString:string = params.toString().replaceAll("=",":").replaceAll("&"," ")
+        let queryString:string = ""
+        const keys = Object.keys(searchQuery) as Array<keyof typeof searchQuery>
+        console.log(searchQuery)
+        keys.forEach((key) => {
+            if (searchQuery[key]) {
+                params.set(key, searchQuery[key])
+                queryString += `${key}:"${searchQuery[key]}" `
+            }
+        })
         fetchCards(queryString)
     }
 
@@ -48,7 +57,7 @@ const Search = () => {
                 })
             })
             let queryString:string = ""
-            searchParams.forEach(param => queryString += `${param[0]}:${param[1]} `)
+            searchParams.forEach(param => queryString += `${param[0]}:"${param[1]}" `)
             fetchCards(queryString)
         } else {
             console.log(312)
@@ -70,6 +79,7 @@ const Search = () => {
             setNoQuery(false) 
             if(!queryString) {
                 setNoQuery(true)
+                return
             } else {
                 setHasSearched(true)
                 setSearching(true)
@@ -120,6 +130,26 @@ const Search = () => {
                         onChange={(e)=>handleChange(e)}
                         value={searchQuery.regulationMark}
                     />
+                </div>
+                <div>
+                    <label htmlFor="subtypes">Subtypes: </label>
+                    <select 
+                        id="subtypes" 
+                        name="subtypes"
+                        onChange={(e)=>handleChange(e)}
+                        value={searchQuery.subtypes}
+                    >
+                        <option value={""} defaultValue={""}>Choose a subtype</option>
+                        {cardSubtypesList.map(subtype => 
+                            <option 
+                                value={subtype} 
+                                key={subtype}
+                            >
+                                {subtype}
+                            </option>   
+
+                        )}
+                    </select>
                 </div>
                 <button
                     type="submit"

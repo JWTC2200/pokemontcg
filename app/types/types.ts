@@ -12,4 +12,5 @@ export type TCardData = [] |
 export type TQuery = {
     name: string
     regulationMark: string
+    subtypes: string
 } 

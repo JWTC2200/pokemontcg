@@ -1,7 +1,6 @@
 import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 
 export const GET = async () => {
-    console.log(1232)
     try {
         const res = await PokemonTCG.getAllSets()
         if(!res) return new Response("Card not found", {status: 404})

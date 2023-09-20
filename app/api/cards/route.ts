@@ -12,6 +12,6 @@ export const GET = async (request: Request) => {
         if(!res) return new Response("Card not found", {status: 404})
         return new Response(JSON.stringify(res), {status: 201})
     } catch (error) {
-        console.log(error)
+        
     }
 }
