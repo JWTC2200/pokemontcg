@@ -26,7 +26,6 @@ const Search = () => {
     const [noQuery, setNoQuery] = useState(false)
 
     const [cardData, setCardData] = useState<[PokemonTCG.Card]|[]>([])
-    console.log(cardData.length)
 
     const [searchQuery, setSearchQuery] = useState<TQuery>({
         name:"",
@@ -89,8 +88,6 @@ const Search = () => {
             let queryString:string = ""
             searchParams.forEach(param => queryString += `${param[0]}:"${param[1]}" `)
             fetchCards(queryString)
-        } else {
-            console.log(312)
         }
     }, [])
 
