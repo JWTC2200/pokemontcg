@@ -87,6 +87,7 @@ const Search = () => {
             })
             let queryString:string = ""
             searchParams.forEach(param => queryString += `${param[0]}:"${param[1]}" `)
+
             fetchCards(queryString)
         }
     }, [])
@@ -148,7 +149,7 @@ const Search = () => {
     return (
         <section className="page_container">
             <form 
-                className='text-black flex flex-col items-start w-full bg-white bg-opacity-30 p-2'
+                className='text-black flex flex-col items-start w-full p-2'
                 onSubmit={handleSubmit}
             > 
                 {/* basic search options name, card type then sets */}
@@ -351,7 +352,7 @@ const Search = () => {
                 ? <div>Please provide at least one search option</div>
                 : null
             }
-            <section className='flex flex-wrap gap-4 justify-center border pb-16 bg-red-200 bg-opacity-20 w-full'>            
+            <section className='flex flex-wrap gap-4 justify-center pb-16 w-full'>            
                 { hasSearched 
                     ?  searching 
                         ? <div>...loading</div>

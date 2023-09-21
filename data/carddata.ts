@@ -71,3 +71,17 @@ export const pokemonTypes = [
     "Psychic",
     "Water"
 ]
+
+export const typeColors = [
+    {type:"Colorless", styles:"text-black bg-stone-300"},
+    {type:"Darkness", styles:"text-white bg-cyan-800"},
+    {type:"Dragon", styles:"text-black bg-amber-400"},
+    {type:"Fairy", styles:"text-black bg-pink-500"},
+    {type:"Fighting", styles:"text-black bg-amber-600"},
+    {type:"Fire", styles:"text-black bg-orange-600"},
+    {type:"Grass", styles:"text-black bg-lime-400"},
+    {type:"Lightning", styles:"text-black bg-yellow-300"},
+    {type:"Metal", styles:"text-black bg-gray-400"},
+    {type:"Psychic", styles:"text-black bg-purple-400"},
+    {type:"Water", styles:"text-black bg-sky-500"},
+]
