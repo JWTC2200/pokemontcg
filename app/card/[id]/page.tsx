@@ -8,16 +8,18 @@ import { typeColors } from '@/data/carddata'
 import { energySymbols } from '@/app/utils/energyTypes'
 import Image from 'next/image'
 
+type cardRegMark = PokemonTCG.Card & {regulationMark: string}
+
 const SingleCard = () => {
 
     const { id } = useParams()
-    const [cardData, setCardData] = useState<PokemonTCG.Card|null>(null)    
+    const [cardData, setCardData] = useState<cardRegMark|null>(null)    
     
     useEffect(()=> {
         const getSingleCard = async () => {
             try {
                 const res = await fetch(`/api/cards/${id}`)
-                const data:PokemonTCG.Card = await res.json()
+                const data:cardRegMark = await res.json()
                 setCardData(data)
             } catch (error) {
                 console.log(error)
@@ -28,13 +30,15 @@ const SingleCard = () => {
 
     let headingStyles = "bg-gray-200 text-black "
 
-    // if(cardData?.types != undefined) {
-    //     typeColors.forEach(type => {
-    //         if(type.type === cardData.types[0] ) {
-    //             headingStyles = type.styles
-    //         }
-    //     })
-    // }
+    if(cardData?.types != undefined) {
+        for (let i=0; i < typeColors.length; i++) {
+            if (typeColors[i].type === cardData.types[0]) {
+                headingStyles = typeColors[i].styles
+            }
+        }
+    }
+
+    console.log(cardData)
 
     return (
         <section className='page_container'>
@@ -51,7 +55,15 @@ const SingleCard = () => {
                     </Link>                    
                 </section>
                 <section className="w-full text-slate-900">
-                    <h1 className={`${headingStyles} py-6 pl-8 rounded-t-lg text-3xl font-bold`}>{cardData.name}</h1>
+                    <h1 className={`${headingStyles} py-6 pl-8 rounded-t-lg text-3xl font-bold flex items-center`}>
+                        {cardData.regulationMark 
+                            ? <span className="mr-4 px-1 text-2xl border-2 border-black rounded-lg bg-white">
+                                {cardData.regulationMark}
+                            </span>
+                            : null
+                        }                        
+                        {cardData.name}
+                    </h1>
                     <section className="flex justify-between px-4 py-2 bg-white">
                         <p>{cardData.subtypes ? cardData.subtypes[0] : null} {cardData.supertype}</p>
                         {cardData.hp 
@@ -114,15 +126,14 @@ const SingleCard = () => {
                         }
                         {cardData.attacks?.map(attack => 
                             <div key={attack.name}>
-                                <div className='flex justify-between'>
+                                <div className='flex justify-between items-center'>
                                     <div className='flex gap-1'>
                                         {attack.cost.map(energy=>energySymbols(energy))}
                                     </div>
                                     <h3 className='font-bold text-lg'>{attack.name}</h3>
                                     <p className='mr-4 font-bold'>{attack.damage}</p>
                                 </div>
-                                <p>{attack.text}</p>
-                                
+                                <p>{attack.text}</p>                                
                             </div>    
                         )}
                     </section>

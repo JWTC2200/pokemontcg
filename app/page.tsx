@@ -8,7 +8,7 @@ export default function Index() {
   const { user } = useUser()
 
   return (
-    <section className="w-full max-w-screen-2xl h-full bg-slate-500 bg-opacity-30 flex flex-col items-center pt-4 px-4">
+    <section className="page_container">
       <h1 className="text-3xl font-extrabold">
         Welcome{user?.name ? " " + user.name : null}, to the PokemonTCG Card Search! 
       </h1>
