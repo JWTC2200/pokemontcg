@@ -54,7 +54,7 @@ export const cardRaritiesList = [
 
 export const superTypes = [
     "Energy",
-    "Pokémon",
+    "Pokemon",
     "Trainer"
 ]
 
