@@ -339,14 +339,14 @@ const Search = () => {
                 <div className="flex gap-2 w-full sm:justify-center">
                     <button
                         type="submit"
-                        className='self-center red_btn mt-2'
+                        className='self-center nav_btn mt-2'
                         disabled={searching}
                     >
                         Search
                     </button>
                     <button 
                         type="reset"
-                        className='self-center red_btn mt-2'
+                        className='self-center nav_btn mt-2'
                         onClick={()=>{resetForm()}}
                     >
                         Reset
@@ -356,14 +356,14 @@ const Search = () => {
             </form>
             {
                 noQuery 
-                ? <div>Please provide at least one search option</div>
+                ? <div className="text-red-500 text-xl mt-4">Please provide at least one search option!</div>
                 : null
             }
             <section className='flex flex-wrap gap-4 justify-center pb-16 w-full'>            
                 { hasSearched 
                     ?  searching 
-                        ? <div>...loading</div>
-                        : dataEl.length ? dataEl : <div>No results</div>
+                        ? <div className="text-yellow-600 text-xl mt-4">...loading</div>
+                        : dataEl.length ? dataEl : <div className="text-red-500 text-xl mt-4">No results</div>
                     : null               
                 }                
             </section>

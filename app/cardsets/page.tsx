@@ -73,7 +73,7 @@ const CardSets = () => {
     }, [AllCardSets]) 
 
     return (
-        <section className='page_container gap-4'>
+        <section className='page_container gap-4 text-black'>
             { loading.series 
                 ? <div>...loading</div>
                 : <div className='flex gap-2'>
@@ -81,7 +81,7 @@ const CardSets = () => {
                     <select 
                         name="series-select" 
                         id="series-select" 
-                        className='text-black' 
+                        className='select_field' 
                         onChange={(e)=>setSelectedSeries(e.target.value)}
                     >
                         <option value={""}>Choose a series</option>
@@ -96,7 +96,7 @@ const CardSets = () => {
                         <select 
                             name="set-select" 
                             id="set-select" 
-                            className='text-black'
+                            className='select_field'
                             onChange={(e)=>setSelectedSet(e.target.value)}
                         >
                             <option value={""}>Choose a set</option>
@@ -105,7 +105,7 @@ const CardSets = () => {
                     </div>
                     <button 
                         type="button"
-                        className='red_btn'
+                        className='nav_btn'
                         onClick={()=>getSetCards()}
                     >
                         Search

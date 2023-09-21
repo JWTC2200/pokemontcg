@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { typeColors } from '@/data/carddata'
 import { energySymbols } from '@/app/utils/energyTypes'
 import Image from 'next/image'
+import { FaExternalLinkAlt } from "react-icons/fa"
 
 type cardRegMark = PokemonTCG.Card & {regulationMark: string}
 
@@ -38,12 +39,10 @@ const SingleCard = () => {
         }
     }
 
-    console.log(cardData)
-
     return (
         <section className='page_container'>
             {cardData
-            ? <div className="flex flex-col lg:flex-row  w-full gap-8">
+            ? <div className="flex flex-col lg:flex-row w-full gap-8 px-2 sm:px-8 lg:px-0 xl:px-4 2xl:px-12">
                 <section className="w-full flex justify-center items-center bg-gray-200 bg-opacity-10 rounded-lg">
                     <Link
                         href={`/search?name=${cardData.name}`}
@@ -55,7 +54,7 @@ const SingleCard = () => {
                     </Link>                    
                 </section>
                 <section className="w-full text-slate-900">
-                    <h1 className={`${headingStyles} py-6 pl-8 rounded-t-lg text-3xl font-bold flex items-center`}>
+                    <h1 className={`${headingStyles} py-6 pl-8 rounded-t-lg text-3xl font-bold flex items-center lg:mt-4`}>
                         {cardData.regulationMark 
                             ? <span className="mr-4 px-1 text-2xl border-2 border-black rounded-lg bg-white">
                                 {cardData.regulationMark}
@@ -173,15 +172,16 @@ const SingleCard = () => {
                             : null
                         }
                     </section>   
-                    <section className="bg-gray-100 bg-opacity-20 px-4 py-2 flex flex-col gap-4 rounded-b-lg">
+                    <section className="bg-gray-100 bg-opacity-20 px-4 py-2 flex flex-col gap-1 rounded-b-lg">
                         {cardData.artist 
                             ? <p className='font-medium'>Illustrator: <span className='italic'>{cardData.artist}</span></p>
                             : null
                         }
                         <Link
                             href={`/search?set.name=${cardData.set.name.replace("&", "%26")}&set.series=${cardData.set.series.replace("&", "%26")}`}
+                            className='hover:text-orange-800 hover:underline flex gap-2 items-center'
                         >
-                            {cardData.set.series}: {cardData.set.name}
+                            {cardData.set.series}: {cardData.set.name} <FaExternalLinkAlt/>
                         </Link>
                         <div className='flex items-center gap-2'>
                             <img className="h-8" src={cardData.set.images.symbol}/>
