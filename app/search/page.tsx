@@ -116,7 +116,8 @@ const Search = () => {
             } else {
                 setHasSearched(true)
                 setSearching(true)
-                const modded = queryString.replace(searchQuery.name, `${searchQuery.name}*`)
+                let modded = queryString
+                if (searchQuery.name) {modded = queryString.replace(searchQuery.name, `${searchQuery.name}*`)}
                 try {
                     const res = await fetch("api/cards", {
                         headers: {
