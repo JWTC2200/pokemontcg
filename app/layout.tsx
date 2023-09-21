@@ -5,8 +5,8 @@ import Nav from '../components/Nav'
 import SetContextProvider from '@/components/SetContext'
 
 export const metadata: Metadata = {
-  title: 'PokemonTCG Deck Builder',
-  description: 'PokemonTCG Deck Builder',
+  title: 'PokemonTCG Card Search',
+  description: 'PokemonTCG Card Search',
 }
 
 export default function RootLayout({

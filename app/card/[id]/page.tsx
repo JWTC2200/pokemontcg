@@ -37,7 +37,7 @@ const SingleCard = () => {
                 </section>
                 <section className="border w-full px-2">
                     <h1 className="text-center">{cardData.name}</h1>
-                    <p>{cardData.supertype} {cardData.subtypes[0]}</p>
+                    <p>{cardData.subtypes[0]} {cardData.supertype} <span>1</span></p>
                     {cardData.evolvesFrom 
                         ? <p>Evolves from: <Link 
                             className="underline hover:font-semibold"

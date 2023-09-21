@@ -15,7 +15,7 @@ const Nav = () => {
   return (
     <nav className="w-full max-w-screen-2xl bg-slate-800 bg-opacity-75 p-8 flex justify-between flex-wrap items-center gap-4">
         <Link href="/">
-            <h1 className="text-2xl font-bold ">Pokemon Deckbuilder!</h1>
+            <h1 className="text-2xl font-bold ">PokemonTCG Card search!</h1>
         </Link>
         <section className="md:flex gap-2 hidden">
           {user 

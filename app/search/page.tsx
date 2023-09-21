@@ -351,7 +351,7 @@ const Search = () => {
                 ? <div>Please provide at least one search option</div>
                 : null
             }
-            <section className='flex flex-wrap gap-4 justify-center'>                
+            <section className='flex flex-wrap gap-4 justify-center border pb-16 bg-red-200 bg-opacity-20 w-full'>            
                 { hasSearched 
                     ?  searching 
                         ? <div>...loading</div>

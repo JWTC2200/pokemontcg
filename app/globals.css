@@ -85,3 +85,15 @@
   box-shadow: 0 0 5px 4px #fff;
   border-radius: 0.75rem
 }
+
+.search_option {
+  @apply flex flex-col items-start gap-1 w-full max-w-sm 
+}
+
+.input_field {
+  @apply w-full placeholder-black px-2 h-8 bg-slate-100
+}
+
+.select_field {
+  @apply w-full px-2 h-8 bg-slate-100
+}
