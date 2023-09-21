@@ -40,8 +40,6 @@ const Search = () => {
         "set.name": ""
     })
 
-    console.log(searchQuery)
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setSearchQuery((prev) => {
             return (
@@ -118,10 +116,11 @@ const Search = () => {
             } else {
                 setHasSearched(true)
                 setSearching(true)
+                const modded = queryString.replace(searchQuery.name, `${searchQuery.name}*`)
                 try {
                     const res = await fetch("api/cards", {
                         headers: {
-                            query: queryString
+                            query: modded
                         }
                     })
                     const data = await res.json()
