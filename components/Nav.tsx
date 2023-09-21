@@ -34,12 +34,6 @@ const Nav = () => {
               </Link>
               <Link 
                 className="red_btn" 
-                href="/decks"
-              >
-                Decks
-              </Link>
-              <Link 
-                className="red_btn" 
                 href="/api/auth/logout"
               >
                 Logout

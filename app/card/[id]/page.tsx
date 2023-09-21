@@ -168,7 +168,7 @@ const SingleCard = () => {
                             : null
                         }
                         <Link
-                            href={`/search?set.name=${cardData.set.name}`}
+                            href={`/search?set.name=${cardData.set.name.replace("&", "%26")}&set.series=${cardData.set.series.replace("&", "%26")}`}
                         >
                             {cardData.set.series}: {cardData.set.name}
                         </Link>

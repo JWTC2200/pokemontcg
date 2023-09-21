@@ -11,6 +11,8 @@ import { IoMdClose, IoMdOpen } from "react-icons/io"
 
 const Search = () => {
 
+    
+
     const AllCardSets = useContext(CardSetContext)
     const sortedCardSets = AllCardSets.sort(function(a,b){
         return Number(new Date(b.releaseDate)) - Number(new Date(a.releaseDate))
@@ -37,6 +39,8 @@ const Search = () => {
         "set.series": "",
         "set.name": ""
     })
+
+    console.log(searchQuery)
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setSearchQuery((prev) => {
@@ -189,7 +193,7 @@ const Search = () => {
                 </div>
                 <div className="flex flex-wrap gap-2 mt-4 w-full lg:justify-center sm:flex-nowrap">
                     <div className='search_option'>
-                        <label htmlFor="set.series" className="text-xl font-semibold">Set Series: </label>
+                        <label htmlFor="set.series" className="text-xl font-semibold">Sort By Series: </label>
                         <select
                             id="set.series"
                             name='set.series'
@@ -200,7 +204,7 @@ const Search = () => {
                             value={searchQuery["set.series"]}
                             className='select_field'
                         >
-                            <option value="" defaultValue="">Chose series</option>
+                            <option value="" defaultValue="">Select series</option>
                             {Array.from(new Set(sortedCardSets.map(set => set.series))).map(series => 
                                 <option
                                     value={series}
@@ -212,7 +216,7 @@ const Search = () => {
                         </select>
                     </div>                    
                     <div className='search_option'>
-                        <label htmlFor="set.name" className="text-xl font-semibold">Set name: </label>
+                        <label htmlFor="set.name" className="text-xl font-semibold">Set Name: </label>
                         <select
                             id="set.name"
                             name="set.name"
@@ -221,22 +225,25 @@ const Search = () => {
                             className='select_field'
                         >
                             <option value="" defaultValue="">
-                                {searchQuery["set.series"] 
-                                    ? "Select a set"
-                                    : "Select a series first"
-                                }
+                                Select set
                             </option>
-                            {
-                                sortedCardSets.filter(set => 
-                                    set.series === searchQuery["set.series"]
-                                ).map(sets => 
-                                        <option
-                                            value={sets.name}
-                                            key={sets.name}
-                                        >
-                                            {sets.name}
-                                        </option>
-                                    )
+                            { searchQuery["set.series"] 
+                                ? sortedCardSets.filter(sets => sets.series === searchQuery["set.series"]).map(sets => 
+                                    <option
+                                        value={sets.name}
+                                        key={sets.name+sets.series}
+                                    >
+                                        {`${sets.name} (${sets.printedTotal} cards)`}
+                                    </option>
+                                )
+                                : sortedCardSets.map(sets => 
+                                    <option
+                                        value={sets.name}
+                                        key={sets.name+sets.series}
+                                    >
+                                        {`${sets.name} (${sets.printedTotal} cards)`}
+                                    </option>
+                                )
                             }
                         </select>
                     </div>

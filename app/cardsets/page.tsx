@@ -30,7 +30,7 @@ const CardSets = () => {
             key={filtered.id}
             value={filtered.id}
         >
-            {filtered.name} {`(${filtered.total} cards)`}
+            {filtered.name} {`(${filtered.printedTotal} cards)`}
         </option>
     )
 
