@@ -150,7 +150,7 @@ const SingleCard = () => {
                                     }
                                 </div>
                                 <div className='flex flex-col items-center'>
-                                    <h3 className='text-lg font-bold'>Resistances</h3>
+                                    <h3 className='text-lg font-bold'>Resistance</h3>
                                     {cardData.resistances
                                         ? <div className='flex items-center'>
                                             {energySymbols(cardData.resistances[0].type)}
@@ -160,7 +160,7 @@ const SingleCard = () => {
                                     }
                                 </div>
                                 <div className='flex flex-col items-center'>
-                                    <h3 className='text-lg font-bold'>Retreat Cost</h3>
+                                    <h3 className='text-lg font-bold'>Retreat</h3>
                                     {cardData.retreatCost 
                                         ?   <div className='flex items-center'>
                                             {cardData.retreatCost.map((energy) => energySymbols(energy))}
