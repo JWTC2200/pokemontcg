@@ -41,9 +41,7 @@ const Search = () => {
         setSearchQuery((prev) => {
             return (
                 {...prev, [e.target.name]: `${e.target.value}`}
-            )
-        })
-    }
+    )})}
 
     const resetForm = () => {
         setSearchQuery({
@@ -55,8 +53,7 @@ const Search = () => {
             types: "",
             series: "",
             setname: "",
-        })
-    }
+    })}
 
     // if query string already exists set all form fields then search for cards
     useEffect(()=>{        
@@ -81,7 +78,7 @@ const Search = () => {
             setFirstLoad(false)
         }        
         loadQueryCheck()
-    },[firstLoad])
+    }, [firstLoad])
 
     // form submit search for cards
     const handleSubmit = (e: React.SyntheticEvent) => {
@@ -113,7 +110,9 @@ const Search = () => {
                 setSearching(false)
                 return
             }
-            const sortedData = data.sort(function(a: PokemonTCG.Card,b: PokemonTCG.Card){
+            const sortedData = data.sort(function(a: PokemonTCG.Card, b:PokemonTCG.Card) {
+                return Number(a.number) - Number(b.number)
+            }).sort(function(a: PokemonTCG.Card,b: PokemonTCG.Card){
                 return Number(new Date(b.set.releaseDate)) - Number(new Date(a.set.releaseDate))
             })
             setCardData(sortedData)
