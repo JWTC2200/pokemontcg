@@ -14,14 +14,13 @@ const TestingPage = () => {
         params.set(type, value)
     }
 
-    const onSubmit = ()=>{
-        router.push(`/testing?${params.toString()}`)
+    const onSubmit = async ()=>{
+        try {
+            await fetch("api/testing?name=pikachu&set=hello")
+        } catch (error) {
+            
+        }
     }
-
-    useEffect(()=> {
-        console.log(searchParams)
-    }, [searchParams])
-
 
     return (
         <div className='flex flex-col gap-2 mt-12'>

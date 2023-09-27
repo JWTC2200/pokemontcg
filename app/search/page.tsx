@@ -11,8 +11,6 @@ import { IoMdClose, IoMdOpen } from "react-icons/io"
 
 const Search = () => {
 
-    
-
     const AllCardSets = useContext(CardSetContext)
     const sortedCardSets = AllCardSets.sort(function(a,b){
         return Number(new Date(b.releaseDate)) - Number(new Date(a.releaseDate))
@@ -118,8 +116,9 @@ const Search = () => {
                 setSearching(true)
                 let modded = queryString
                 if (searchQuery.name) {modded = queryString.replace(searchQuery.name, `${searchQuery.name}*`)}
+                console.log(queryString)
                 try {
-                    const res = await fetch("api/cards", {
+                    const res = await fetch(`api/cards`, {
                         headers: {
                             query: modded
                         }

@@ -13,7 +13,7 @@
 }
 
 .page_container {
-  @apply w-full max-w-screen-2xl flex flex-col items-center pt-4 px-4 bg-white bg-opacity-25 flex-grow
+  @apply w-full max-w-screen-2xl flex flex-col items-center pt-4 px-4 bg-white bg-opacity-25 flex-grow pb-12
 }
 
 .main_bg {
