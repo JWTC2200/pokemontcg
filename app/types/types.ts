@@ -16,6 +16,6 @@ export type TQuery = {
     rarity: string
     supertype: string
     types: string
-    "set.series": string,
-    "set.name": string,
+    series: string,
+    setname: string,
 } 

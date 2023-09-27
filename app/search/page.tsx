@@ -16,17 +16,16 @@ const Search = () => {
         return Number(new Date(b.releaseDate)) - Number(new Date(a.releaseDate))
     })
 
-    const params = new URLSearchParams()
     const router = useRouter()
-    const searchParams = Array.from(useSearchParams().entries())
+    const searchParams = useSearchParams()
 
     const [toggleAdvanced, setToggleAdvanced] = useState(false)
     const [hasSearched, setHasSearched] = useState(false)
     const [searching, setSearching] = useState(false)
     const [noQuery, setNoQuery] = useState(false)
+    const [firstLoad, setFirstLoad] = useState(true)
 
     const [cardData, setCardData] = useState<[PokemonTCG.Card]|[]>([])
-
     const [searchQuery, setSearchQuery] = useState<TQuery>({
         name:"",
         regulationMark: "",
@@ -34,8 +33,8 @@ const Search = () => {
         rarity: "",
         supertype: "",
         types: "",
-        "set.series": "",
-        "set.name": ""
+        series: "",
+        setname: ""
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -54,92 +53,74 @@ const Search = () => {
             rarity: "",
             supertype: "",
             types: "",
-            "set.series": "",
-            "set.name": "",
+            series: "",
+            setname: "",
         })
     }
 
-    // fetch request from form button 
-    const handleSubmit = (e:React.SyntheticEvent) => {
-        e.preventDefault()
-        handleParams()
-        router.push(`/search?${params.toString()}`)
-        let queryString:string = ""
-        const keys = Object.keys(searchQuery) as Array<keyof typeof searchQuery>
-        keys.forEach((key) => {
-            if (searchQuery[key]) {
-                params.set(key, searchQuery[key])
-                queryString += `${key}:"${searchQuery[key]}" `
-            }
-        })
-        fetchCards(queryString)
-    }
-
-    // If already has search params e.g. from link, immediate search 
-    useEffect(()=>{
-        if (searchParams.length > 0 ) {
-            searchParams.forEach(param => {
-                setSearchQuery((prev) => {
-                    return (
-                        {...prev, [param[0]]: param[1]}
-                    )
-                })
-            })
-            let queryString:string = ""
-            searchParams.forEach(param => queryString += `${param[0]}:"${param[1]}" `)
-
-            fetchCards(queryString)
-        }
-    }, [])
-
-    // set the search params
-    const handleParams = ()=> {
-        const keys = Object.keys(searchQuery) as Array<keyof typeof searchQuery>
-        keys.forEach((key) => {
-            if (searchQuery[key]) {
-                params.set(key, searchQuery[key])
-            }
-        })
-    }
-
-    // fetch card data using params
-    const fetchCards = async (queryString: string) => {
-            if(searching) {
-                return
-            }  
-            setNoQuery(false) 
-            if(!queryString) {
-                setNoQuery(true)
-                return
-            } else {
-                setHasSearched(true)
-                setSearching(true)
-                let modded = queryString
-                if (searchQuery.name) {modded = queryString.replace(searchQuery.name, `${searchQuery.name}*`)}
-                console.log(queryString)
-                try {
-                    const res = await fetch(`api/cards`, {
-                        headers: {
-                            query: modded
-                        }
-                    })
-                    const data = await res.json()
-                    // if no results skip sorting 
-                    if(!data.length) {
-                        setCardData(data)
-                        setSearching(false)
-                        return
+    // if query string already exists set all form fields then search for cards
+    useEffect(()=>{        
+        const loadQueryCheck = () => {
+            if (firstLoad) {
+                // check valid keys in query string
+                const searchQueryKey = Object.keys(searchQuery)
+                searchParams.forEach((value, key) => {
+                    if( searchQueryKey.includes(key)) {
+                        setSearchQuery((prev) => {
+                            return (
+                                {...prev, [key]: value}
+                            )
+                        })
                     }
-                    // sort cards by set release then sort by Id within set
-                    const sortedData = data.sort(function(a: PokemonTCG.Card,b: PokemonTCG.Card){
-                        return Number(new Date(b.set.releaseDate)) - Number(new Date(a.set.releaseDate))
-                    })
-                    setCardData(sortedData)
-                } catch (error) {
-                    console.log(error)
-                }
+                })
+            } 
+            if(Object.values(searchQuery).filter(value => value).length) {
+                const query = new URLSearchParams(searchQuery)   
+                fetchCards(query)
+            }               
+            setFirstLoad(false)
+        }        
+        loadQueryCheck()
+    },[firstLoad])
+
+    // form submit search for cards
+    const handleSubmit = (e: React.SyntheticEvent) => {
+        e.preventDefault()
+        const query = new URLSearchParams(searchQuery)        
+        fetchCards(query)
+    }
+    
+    const fetchCards = async (query:URLSearchParams)=>{
+        // stop if already searching somehow
+        if (searching) {
+            return
+        }
+        // check has at least one value
+        setNoQuery(false)
+        if (!Object.values(searchQuery).filter(value => value).length) {
+            setNoQuery(true)
+            return
+        }
+        router.push(`/search?${query}`)
+        setHasSearched(true)
+        setSearching(true)
+        try {
+            const res = await fetch(`api/cards?${query.toString()}`) 
+            const data = await res.json()
+
+            if(!data.length) {
+                setCardData(data)
                 setSearching(false)
-            }           
+                return
+            }
+            const sortedData = data.sort(function(a: PokemonTCG.Card,b: PokemonTCG.Card){
+                return Number(new Date(b.set.releaseDate)) - Number(new Date(a.set.releaseDate))
+            })
+            setCardData(sortedData)
+            setSearching(false)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const dataEl = cardData.map(card => 
@@ -192,15 +173,15 @@ const Search = () => {
                 </div>
                 <div className="flex flex-wrap gap-2 mt-4 w-full lg:justify-center sm:flex-nowrap">
                     <div className='search_option'>
-                        <label htmlFor="set.series" className="text-xl font-semibold">Sort By Series: </label>
+                        <label htmlFor="series" className="text-xl font-semibold">Sort By Series: </label>
                         <select
-                            id="set.series"
-                            name='set.series'
+                            id="series"
+                            name='series'
                             onChange={(e)=>{
                                 handleChange(e)
-                                setSearchQuery((prev) => ({...prev, ["set.name"]: "" }))
+                                setSearchQuery((prev) => ({...prev, setname: "" }))
                             }}
-                            value={searchQuery["set.series"]}
+                            value={searchQuery.series}
                             className='select_field'
                         >
                             <option value="" defaultValue="">Select series</option>
@@ -215,19 +196,19 @@ const Search = () => {
                         </select>
                     </div>                    
                     <div className='search_option'>
-                        <label htmlFor="set.name" className="text-xl font-semibold">Set Name: </label>
+                        <label htmlFor="setname" className="text-xl font-semibold">Set Name: </label>
                         <select
-                            id="set.name"
-                            name="set.name"
+                            id="setname"
+                            name="setname"
                             onChange={(e)=>handleChange(e)}
-                            value={searchQuery["set.name"]}
+                            value={searchQuery.setname}
                             className='select_field'
                         >
                             <option value="" defaultValue="">
                                 Select set
                             </option>
-                            { searchQuery["set.series"] 
-                                ? sortedCardSets.filter(sets => sets.series === searchQuery["set.series"]).map(sets => 
+                            { searchQuery.series 
+                                ? sortedCardSets.filter(sets => sets.series === searchQuery.series).map(sets => 
                                     <option
                                         value={sets.name}
                                         key={sets.name+sets.series}
