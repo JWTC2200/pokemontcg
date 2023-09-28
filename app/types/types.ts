@@ -1,3 +1,5 @@
+import { PokemonTCG } from "pokemon-tcg-sdk-typescript"
+
 export type TCardData = [] |
     [
         {
@@ -18,4 +20,11 @@ export type TQuery = {
     types: string
     series: string,
     setname: string,
-} 
+}
+
+export type TDeck = {
+    id: string
+    deckname: string
+    user: string
+    cards: [PokemonTCG.Card]
+}

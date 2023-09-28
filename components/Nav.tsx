@@ -28,9 +28,9 @@ const Nav = () => {
               </Link>
               <Link 
                 className="nav_btn" 
-                href="/cardsets"
+                href="/decks"
               >
-                Sets
+                Decks
               </Link>
               <Link 
                 className="nav_btn" 
@@ -61,10 +61,10 @@ const Nav = () => {
                 </Link> 
                 <Link
                   className="dropdown_link"
-                  href="/cardsets"
+                  href="/Decks"
                   onClick={()=> setMenuToggle(false)}
                 >
-                  Set Search
+                  Decks
                 </Link>
                 <Link
                   className="dropdown_link mt-2 font-semibold text-lg"

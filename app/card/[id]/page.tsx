@@ -6,15 +6,15 @@ import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 import Link from 'next/link'
 import { typeColors } from '@/data/carddata'
 import { energySymbols } from '@/app/utils/energyTypes'
-import Image from 'next/image'
 import { FaExternalLinkAlt } from "react-icons/fa"
+import addToDeck from '@/app/utils/deckstorage'
 
 type cardRegMark = PokemonTCG.Card & {regulationMark: string}
 
 const SingleCard = () => {
 
     const { id } = useParams()
-    const [cardData, setCardData] = useState<cardRegMark|null>(null)    
+    const [cardData, setCardData] = useState<cardRegMark|null>(null)
     
     useEffect(()=> {
         const getSingleCard = async () => {
@@ -28,6 +28,8 @@ const SingleCard = () => {
         }
         getSingleCard()
     }, [])
+
+    console.log(cardData?.nationalPokedexNumbers)
 
     let headingStyles = "bg-gray-200 text-black "
 
@@ -43,7 +45,7 @@ const SingleCard = () => {
         <section className='page_container'>
             {cardData
             ? <div className="flex flex-col lg:flex-row w-full gap-8 px-2 sm:px-8 lg:px-0 xl:px-4 2xl:px-12">
-                <section className="w-full flex justify-center items-center bg-gray-200 bg-opacity-10 rounded-lg">
+                <section className="w-full flex flex-col justify-center items-center bg-gray-200 bg-opacity-10 rounded-lg">
                     <Link
                         href={`/search?name=${cardData.name}`}
                     >
@@ -51,7 +53,13 @@ const SingleCard = () => {
                             src={cardData.images.large} 
                             className="w-96 p-4"
                         />
-                    </Link>                    
+                    </Link>    
+                    <div 
+                        className='nav_btn cursor-pointer'
+                        onClick={()=>addToDeck(cardData)}
+                    >
+                        Add to deck
+                    </div>                
                 </section>
                 <section className="w-full text-slate-900">
                     <h1 className={`${headingStyles} py-6 pl-8 rounded-t-lg text-3xl font-bold flex items-center lg:mt-4`}>
