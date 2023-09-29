@@ -8,12 +8,12 @@ export const GET = async (req: NextRequest) => {
     } 
 
     const name = params.name ? `name:"${params.name}*"` : "" 
-    const subTypes = params.subtypes ? `subtypes:"${params.subtypes}"` : ""
+    const superType = params.supertype ? `supertype:"${params.supertype}"` : ""
     const setname = params.setname ? `set.name:"${params.setname}"` :""
     const format = params.format ? `legalities.${params.format}:legal` : ""
 
     try {
-        const res = await PokemonTCG.findCardsByQueries({ q: `${name} ${subTypes} ${setname} ${format}`})
+        const res = await PokemonTCG.findCardsByQueries({ q: `${name} ${superType} ${setname} ${format}`})
         if(!res) return new Response("Card not found", {status: 404})
         return new Response(JSON.stringify(res), {status: 201})
         

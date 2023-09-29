@@ -18,7 +18,6 @@ const Decks = () => {
         try {
             const res = await fetch(`/api/decks/${user?.sub}`)
             const data = await res.json()
-            console.log(data)
             setDeckData(data)            
         } catch (error) {
             console.log(error)

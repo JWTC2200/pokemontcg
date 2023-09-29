@@ -1,7 +1,8 @@
+import { NextRequest } from 'next/server'
 import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 
 
-export const GET = async (req:any) => {
+export const GET = async (req:NextRequest) => {
     let params: any = {}
     for (const [key, val] of req.nextUrl.searchParams) { 
         params[key] = val 

@@ -4,8 +4,8 @@ import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 type Tprops = {
     image: string,
     editting: boolean,
-    addCard: React.Dispatch<React.SetStateAction<any>>
-    removeCard: React.Dispatch<React.SetStateAction<any>>
+    addCard: () => void
+    removeCard: () => void
 }
 
 const DeckCards = ({image, editting, addCard, removeCard}: Tprops ) => {
