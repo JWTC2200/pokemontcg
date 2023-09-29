@@ -4,7 +4,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { TQuery } from '../types/types'
-import Card from '../../components/Card'
+import Card from '@/components/Card'
 import { cardSubtypesList, cardRaritiesList, superTypes, pokemonTypes } from '@/data/carddata'
 import { CardSetContext } from '@/components/SetContext'
 import { IoMdClose, IoMdOpen } from "react-icons/io"
