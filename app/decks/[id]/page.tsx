@@ -13,6 +13,8 @@ import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai"
 import { addCardCheck } from '@/app/utils/editdeckchecks'
 import { useUser } from '@auth0/nextjs-auth0/client'
 
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 
 const SingleDeck = () => {
   const { id } = useParams()

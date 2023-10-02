@@ -7,6 +7,8 @@ import { PokemonTCG } from "pokemon-tcg-sdk-typescript"
 import { useUser } from "@auth0/nextjs-auth0/client"
 import Link from "next/link"
 import { deckSorting } from "../utils/decksorting"
+
+export const dynamic = "force-dynamic"
 export const revalidate = 0
 
 const Decks = () => {
