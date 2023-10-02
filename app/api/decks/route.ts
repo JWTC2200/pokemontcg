@@ -1,6 +1,6 @@
 import supabase from "@/app/utils/supabase";
 
-export const dynamic = "force-dynamic"
+export const revalidate = 0
 
 export const POST = async (req: Request) => {
     const {deckname, owner, cards } = await req.json()
