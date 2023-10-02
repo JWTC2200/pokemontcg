@@ -1,5 +1,9 @@
 import supabase from "@/app/utils/supabase";
 
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
+
 export const GET = async (req: Request, {params}: {params:{id:string}}) => {
     try {
         console.log("get user decks")
