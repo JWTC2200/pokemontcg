@@ -16,7 +16,9 @@ const Decks = () => {
 
     const getUserDecks = async () => {
         try {
-            const res = await fetch(`/api/decks/${user?.sub}`)
+            const res = await fetch(`/api/decks/${user?.sub}`, {
+                cache: "no-store"
+            })
             const data = await res.json()
             setDeckData(data)            
         } catch (error) {
