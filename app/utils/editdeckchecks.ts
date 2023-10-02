@@ -1,6 +1,5 @@
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript"
 
-
 export const addCardCheck = (deck: [] | Array<PokemonTCG.Card>, newCard: PokemonTCG.Card) => {
     const names = deck.map(card => card.name)
     if (newCard.supertype === "Pokémon") {
@@ -23,7 +22,3 @@ export const addCardCheck = (deck: [] | Array<PokemonTCG.Card>, newCard: Pokemon
     return true
 }
 
-
-export const removeCardCheck = (deck: [] | Array<PokemonTCG.Card>) => {
-    console.log(deck)
-}

@@ -53,13 +53,7 @@ const SingleCard = () => {
                             src={cardData.images.large} 
                             className="w-96 p-4"
                         />
-                    </Link>    
-                    <div 
-                        className='nav_btn cursor-pointer'
-                        onClick={()=>addToDeck(cardData)}
-                    >
-                        Add to deck
-                    </div>                
+                    </Link>                
                 </section>
                 <section className="w-full text-slate-900">
                     <h1 className={`${headingStyles} py-6 pl-8 rounded-t-lg text-3xl font-bold flex items-center lg:mt-4`}>
