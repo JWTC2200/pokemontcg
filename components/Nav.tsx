@@ -60,7 +60,7 @@ const Nav = () => {
                 </Link> 
                 <Link
                   className="dropdown_link"
-                  href="/Decks"
+                  href="/decks"
                   onClick={()=> setMenuToggle(false)}
                 >
                   Decks

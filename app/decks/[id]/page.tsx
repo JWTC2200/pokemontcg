@@ -3,24 +3,27 @@
 import { TDeck } from '@/app/types/types'
 import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 import { deckSorting } from '@/app/utils/decksorting'
-import { useParams, notFound } from 'next/navigation'
+import { useParams, useRouter, redirect } from 'next/navigation'
 import { CardSetContext } from '@/components/SetContext'
 import React, { useEffect, useState, useContext } from 'react'
-import Card from '@/components/Card'
+import { ToastContainer, toast } from 'react-toastify'
 import DeckCards from '@/components/DeckCards'
 import { superTypes } from '@/data/carddata'
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai"
 import { addCardCheck } from '@/app/utils/editdeckchecks'
 import { useUser } from '@auth0/nextjs-auth0/client'
 
+
 const SingleDeck = () => {
   const { id } = useParams()
+  const router = useRouter()
   const { user } = useUser()
 
   const [deckData, setDeckData] = useState<{}|TDeck>({})
   const [deckName, setDeckName] = useState("New deck")
   const [deckCards, setDeckCards] = useState<[] | Array<PokemonTCG.Card>>([])
   const [savingDeck, setSavingDeck] = useState(false)
+  const [deleteDeck, setDeleteDeck] = useState(false)
 
   // card set data
   const AllCardSets = useContext(CardSetContext)
@@ -89,15 +92,23 @@ const SingleDeck = () => {
   }
 
   const addCard = (card:PokemonTCG.Card)=>{
-    addCardCheck(deckCards, card) && setDeckCards(prev => [...prev, card])
+    const checkResults = addCardCheck(deckCards, card)
+    if (checkResults.result) {
+        setDeckCards(prev => [...prev, card])
+      toast.success(`${card.name} added`)
+    }
+    else {
+      toast.error(`${checkResults.message}`)
+    }
   }
 
   const removeCard = (card:PokemonTCG.Card)=> {
     // finds index of first matching card id then remove
+    const cardIndex = deckCards.findIndex(deckcard => deckcard.id === card.id)
     setDeckCards((prev)=> {
-      const cardIndex = prev.findIndex(card => card.id === card.id)
-      return prev.filter((card, index) => index != cardIndex)
+      return prev.filter((_, index) => index !== cardIndex)
     })
+    toast.warning(`${card.name} removed`)
   }
 
   const handleSaveDeck = async ()=>{
@@ -106,27 +117,65 @@ const SingleDeck = () => {
       return
     }
     setSavingDeck(true)
+    if (id === "newdeck") {
+      try {
+        const res = await fetch("/api/decks", {
+          method: "POST",
+          body: JSON.stringify({
+            owner: user.sub,
+            deckname: deckName,
+            cards: deckCards,
+          })
+        })
+        if (res.ok) {
+          console.log("deck saved")
+        } else {
+          console.log("save failed")
+        }
+        const data = await res.json()
+        router.replace(`/decks/${data.data[0].id}`)
+      } catch(error ) {
+        console.log(error)
+      }
+    } else {
+      try {
+        const res = await fetch("/api/decks", {
+          method: "PUT",
+          body: JSON.stringify({
+            id: id,
+            deckname: deckName,
+            cards: deckCards,
+          })
+        })
+        if (res.ok) {
+          console.log("deck saved")
+        } else {
+          console.log("save failed")
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }    
+    setSavingDeck(false)
+  }
+
+  const handleDeleteDeck = async () => {
     try {
       const res = await fetch("/api/decks", {
-        method: "POST",
-        body: JSON.stringify({
-          owner: user.sub,
-          deckname: deckName,
-          cards: deckCards,
+        method: "DELETE",
+        body: JSON.stringify ({
+          id: id
         })
       })
       if (res.ok) {
-        console.log("deck saved")
+        router.replace("/decks")
       } else {
         console.log("save failed")
       }
-      setSavingDeck(false)
-    } catch (error) {
+    } catch(error) {
       console.log(error)
     }
-
   }
-
 
   useEffect(()=> {
     // don't bother fetching if its new
@@ -139,9 +188,8 @@ const SingleDeck = () => {
         const data = await res.json()
         // don't change deckdata if no results 
         if(!data) {
-          // change this for an alert or page message
-          console.log("No such deck")
-          return 
+          // redirect them if doesn't exist
+          router.push("/decks")
         }
         setDeckData(data[0])
         setDeckName(data[0].deckname)
@@ -157,8 +205,15 @@ const SingleDeck = () => {
 
   return (
     <div
-        className='page_container'
+        className='page_container relative'
     > 
+      <ToastContainer
+        toastClassName={"w-60 overflow-hidden"}
+        draggable={false}
+        closeOnClick
+        autoClose={1000}
+        newestOnTop
+      />
       { showForm
         ? <div
           className='w-full bg-white text-black flex items-center mt-4 justify-between px-4 py-1 cursor-pointer'
@@ -374,7 +429,37 @@ const SingleDeck = () => {
           />
         )}
       </section>
+      {
+        id != "newdeck" 
+        ? !deleteDeck 
+            ? <button
+              type="button"
+              className='nav_btn mt-4'
+              onClick={()=>setDeleteDeck(true)}
+            >
+              Delete deck
+            </button>
+            : <div className='flex flex-col gap-2'>
+              <button
+                type="button"
+                className='nav_btn mt-4'
+                onClick={()=>setDeleteDeck(false)}
+              >
+                Cancel 
+              </button> 
+              <button
+                type="button"
+                className='nav_btn  mt-4'
+                onClick={handleDeleteDeck}
+              >
+                Confirm delete
+              </button>
+
+            </div>              
         
+        
+        : null
+      }
     </div>
   )
 }

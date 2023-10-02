@@ -4,6 +4,7 @@ import { UserProvider } from '@auth0/nextjs-auth0/client'
 import Nav from '../components/Nav'
 import Footer from '@/components/Footer'
 import SetContextProvider from '@/components/SetContext'
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
   title: 'PokemonTCG Card Search',
