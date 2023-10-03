@@ -98,7 +98,7 @@ const Search = () => {
             setNoQuery(true)
             return
         }
-        router.push(`/search?${query}`)
+        router.replace(`/search?${query}`)
         setHasSearched(true)
         setSearching(true)
         try {

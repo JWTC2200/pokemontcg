@@ -13,16 +13,16 @@ const CardSets = () => {
 
     const AllCardSets = useContext(CardSetContext)
     const sortedSets = AllCardSets.sort((a,b)=> {
-        return Number(new Date(b.releaseDate)) - Number(new Date(a.releaseDate))     })
-
+        return Number(new Date(b.releaseDate)) - Number(new Date(a.releaseDate))})
     const sortedSeries = Array.from(new Set(sortedSets.map(set => set.series)))
+
 
     const [viewMode, setViewMode] = useState(true)
 
     const setIconGridEl = sortedSeries.map(series => {
         const seriesSets = sortedSets.filter(set => set.series === series)
         return (
-            <div key={series} className='flex flex-col bg-white mb-2 pb-2 rounded-xl bg-opacity-75'>                
+            <div key={series} className='flex flex-col bg-white mb-4 pb-2 rounded-xl bg-opacity-75'>                
                 <h3 
                     className='text-3xl font-bold self-center my-2 font-rye'
                 >
@@ -36,16 +36,20 @@ const CardSets = () => {
                         <Link 
                             key={set.name+set.series}
                             href={`/search?setname=${set.name.replace("&", "%26")}&series=${set.series.replace("&", "%26")}`}
-                        >
-                            <img 
-                                src={set.images.logo} 
-                                className='h-12 md:h-16 hover:scale-110' 
-                                alt={`${set.name} logo`}
-                            />
+                            className='hover:scale-110 w-60 h-40 p-2 bg-slate-200 rounded-2xl'
+                        >   
+                            <div className='flex flex-col justify-center items-center text-center'>
+                                <img 
+                                    src={set.images.logo} 
+                                    className='h-20 mb-2 object-contain' 
+                                    alt={`${set.name} logo`}
+                                />
+                                <h3 className='font-changa text-lg'>{set.name}</h3>
+                            </div>
+                            
                         </Link>
                     )}
                 </div>
-                
             </div>
         )
     })
@@ -82,7 +86,7 @@ const CardSets = () => {
     })
 
     return (
-        <section className='page_container text-black '>
+        <section className='page_container text-black'>
             <div className='flex gap-1 self-start justify-self-start items-center mb-4 ml-8'>
                 <h3>Grid</h3>
                 <Switch  
@@ -91,10 +95,8 @@ const CardSets = () => {
                     checkedIcon={<BsFillGridFill className="w-full h-full p-1 text-white"/>}
                     uncheckedIcon={<BsTable className="w-full h-full p-1 text-white"/>}
                 />
-                <h3>Table</h3>
-            </div>
-        
-            
+                <h3>Tables</h3>
+            </div>  
             {viewMode 
                 ? <div>{setIconGridEl}</div>
                 : <div className='flex flex-wrap items-start justify-center sm:gap-2 gap-4'>{setIconTableEl}</div>

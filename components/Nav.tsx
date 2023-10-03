@@ -5,12 +5,17 @@ import { useState } from "react"
 import Link from "next/link"
 import { GiHamburgerMenu } from "react-icons/gi"
 import { BiSolidToTop } from "react-icons/bi"
+import { usePathname } from "next/navigation"
 
 
 const Nav = () => {
 
   const { user } = useUser()
   const [menuToggle, setMenuToggle] = useState(false)
+
+  const pathname = usePathname()
+
+  const activeLink = "before:content-['-_'] after:content-['_-']"
 
   return (
     <nav className="relative w-full max-w-screen-2xl bg-slate-800 bg-opacity-75 p-8 flex justify-end sm:justify-between flex-wrap items-center text-end sm:text-left gap-4 ">
@@ -21,25 +26,31 @@ const Nav = () => {
           {user 
             ? <div className="flex gap-2">
               <Link 
-                className="nav_btn" 
+                className={pathname == "/search" ? activeLink : ""} 
                 href="/search"
               >
                 Cards
               </Link>
               <Link 
-                className="nav_btn" 
+                className={pathname == "/cardsets" ? activeLink : ""} 
+                href="/cardsets"
+              >
+                Sets
+              </Link>
+              <Link 
+                className={pathname == "/decks" ? activeLink : ""} 
                 href="/decks"
               >
                 Decks
               </Link>
               <Link 
-                className="nav_btn" 
+                className=""
                 href="/api/auth/logout"
               >
                 Logout
               </Link>
             </div>
-            : <Link className="nav_btn" href="/api/auth/login">Login</Link>
+            : <Link className="" href="/api/auth/login">Login</Link>
           }      
         </section>
         <section className="md:hidden flex relative">
