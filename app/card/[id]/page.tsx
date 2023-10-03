@@ -55,12 +55,7 @@ const SingleCard = () => {
                 </section>
                 <section className="w-full text-slate-900">
                     <h1 className={`${headingStyles} py-6 pl-8 rounded-t-lg text-3xl font-bold flex items-center lg:mt-4`}>
-                        {cardData.regulationMark 
-                            ? <span className="mr-4 px-1 text-2xl border-2 border-black rounded-lg bg-white">
-                                {cardData.regulationMark}
-                            </span>
-                            : null
-                        }                        
+                                               
                         {cardData.name}
                     </h1>
                     <section className="flex justify-between px-4 py-2 bg-white">
@@ -185,6 +180,12 @@ const SingleCard = () => {
                         </Link>
                         <div className='flex items-center gap-2'>
                             <img className="h-8" src={cardData.set.images.symbol}/>
+                            {cardData.regulationMark 
+                                ? <span className="px-1 text-lg border-2 border-black rounded-lg bg-white font-semibold">
+                                    {cardData.regulationMark}
+                                </span>
+                                : null
+                            } 
                             <p>{cardData.number}/{cardData.set.printedTotal} {cardData.rarity}</p>
                         </div>                        
                     </section>                 

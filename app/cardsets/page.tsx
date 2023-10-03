@@ -1,9 +1,7 @@
 "use client"
 
-import { useState, useEffect, useContext} from 'react'
+import { useState, useContext} from 'react'
 import Link from 'next/link'
-import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
-import Card from '@/components/Card'
 import { CardSetContext } from '@/components/SetContext'
 import Switch from "react-switch"
 import { BsFillGridFill, BsTable } from "react-icons/bs"
