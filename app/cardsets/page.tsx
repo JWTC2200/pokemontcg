@@ -6,14 +6,12 @@ import { CardSetContext } from '@/components/SetContext'
 import Switch from "react-switch"
 import { BsFillGridFill, BsTable } from "react-icons/bs"
 
-
 const CardSets = () => {
 
     const AllCardSets = useContext(CardSetContext)
     const sortedSets = AllCardSets.sort((a,b)=> {
         return Number(new Date(b.releaseDate)) - Number(new Date(a.releaseDate))})
     const sortedSeries = Array.from(new Set(sortedSets.map(set => set.series)))
-
 
     const [viewMode, setViewMode] = useState(true)
 
@@ -43,8 +41,7 @@ const CardSets = () => {
                                     alt={`${set.name} logo`}
                                 />
                                 <h3 className='font-changa text-lg'>{set.name}</h3>
-                            </div>
-                            
+                            </div>                            
                         </Link>
                     )}
                 </div>
@@ -56,7 +53,7 @@ const CardSets = () => {
         const seriesSets = sortedSets.filter(set => set.series === series)
         const setTableEl = seriesSets.map(set => 
             <tr key={set.name+set.series} className='even:bg-gray-300 odd:bg-white py-1'>
-                <td className='w-12 pl-2'><img src={set.images.symbol} className='h-8'/></td>
+                <td className='w-12 pl-2'><img src={set.images.symbol} className='h-8' alt={`${set.name} icon`}/></td>
                 <td className='w-52'>
                     <Link 
                         href={`/search?setname=${set.name.replace("&", "%26")}&series=${set.series.replace("&", "%26")}`}

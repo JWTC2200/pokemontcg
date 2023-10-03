@@ -27,4 +27,5 @@ export type TDeck = {
     deckname: string
     user: string
     cards: [PokemonTCG.Card]
+    created_at: string
 }

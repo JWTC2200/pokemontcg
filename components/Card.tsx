@@ -9,7 +9,7 @@ const Card = ({images, id}: PokemonTCG.Card) => {
     >
       <img
           src={images.small}
-          className='cursor-pointer hover:scale-110 card_outline w-40'
+          className='cursor-pointer hover:scale-110 card_outline w-48'
       />
     </Link>
         
