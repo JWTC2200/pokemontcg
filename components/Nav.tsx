@@ -4,6 +4,7 @@ import { useUser } from "@auth0/nextjs-auth0/client"
 import { useState } from "react"
 import Link from "next/link"
 import { GiHamburgerMenu } from "react-icons/gi"
+import { BiSolidToTop } from "react-icons/bi"
 
 
 const Nav = () => {
@@ -12,9 +13,9 @@ const Nav = () => {
   const [menuToggle, setMenuToggle] = useState(false)
 
   return (
-    <nav className="w-full max-w-screen-2xl bg-slate-800 bg-opacity-75 p-8 flex justify-end sm:justify-between flex-wrap items-center text-end sm:text-left gap-4">
+    <nav className="relative w-full max-w-screen-2xl bg-slate-800 bg-opacity-75 p-8 flex justify-end sm:justify-between flex-wrap items-center text-end sm:text-left gap-4 ">
         <Link href="/">
-            <h1 className="text-2xl font-bold ">PokemonTCG Card search!</h1>
+            <h1 className="text-2xl font-bold ">PTCG Deckbuilder</h1>
         </Link>
         <section className="md:flex gap-2 hidden">
           {user 
@@ -50,7 +51,7 @@ const Nav = () => {
                 onClick={() => setMenuToggle((prev)=>!prev)}
               />
               { menuToggle 
-              ? <div className="dropdown_menu">
+              ? <div className="absolute right-0 top-full mt-3 w-full p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2 justify-end items-end z-50">
                 <Link
                   className="dropdown_link"
                   href="/search"
@@ -85,6 +86,13 @@ const Nav = () => {
             </Link>
           }
         </section>
+        <button 
+          type="button"
+          className="fixed text-4xl bg-slate-800 bg-opacity-75 rounded-full p-1 right-8 bottom-12"
+          onClick={()=>window.scrollTo({top:0, behavior:"smooth"})}
+        >
+          <BiSolidToTop/>
+        </button>
         
     </nav>
   )

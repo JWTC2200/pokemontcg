@@ -1,125 +1,104 @@
 "use client"
 
 import { useState, useEffect, useContext} from 'react'
+import Link from 'next/link'
 import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 import Card from '@/components/Card'
 import { CardSetContext } from '@/components/SetContext'
+import Switch from "react-switch"
+import { BsFillGridFill, BsTable } from "react-icons/bs"
+
 
 const CardSets = () => {
 
     const AllCardSets = useContext(CardSetContext)
+    const sortedSets = AllCardSets.sort((a,b)=> {
+        return Number(new Date(b.releaseDate)) - Number(new Date(a.releaseDate))     })
 
-    const [cardSeries, setCardSeries] = useState<[]|string[]>([])
-    const [selectedSeries, setSelectedSeries] = useState("")
-    const [cardSets, setCardSets] = useState<[]|[PokemonTCG.Set]>([])
-    const [selectedSet, setSelectedSet] = useState("")
-    const [setCards, setSetCards] = useState<[PokemonTCG.Card]|[]>([])
-    const [loading, setLoading] = useState({series: false, cards:false})
+    const sortedSeries = Array.from(new Set(sortedSets.map(set => set.series)))
 
-    const cardSeriesOp = cardSeries.map(series => 
-        <option 
-            key={series}
-            value={series}
-        >
-            {series}
-        </option>
-    )
+    const [viewMode, setViewMode] = useState(true)
 
-    const cardSetOp = cardSets?.filter(set => set.series === selectedSeries).map(filtered => 
-        <option
-            key={filtered.id}
-            value={filtered.id}
-        >
-            {filtered.name} {`(${filtered.printedTotal} cards)`}
-        </option>
-    )
+    const setIconGridEl = sortedSeries.map(series => {
+        const seriesSets = sortedSets.filter(set => set.series === series)
+        return (
+            <div key={series} className='flex flex-col bg-white mb-2 pb-2 rounded-xl bg-opacity-75'>                
+                <h3 
+                    className='text-3xl font-bold self-center my-2 font-rye'
+                >
+                    {series}
+                </h3>
+                <hr className='bg-black border-0 h-px mx-12 md:mx-20 mb-4'/>
+                <div 
+                    className='flex md:gap-4 gap-2 flex-wrap items-center justify-center pb-6'
+                >
+                    {seriesSets.map(set => 
+                        <Link 
+                            key={set.name+set.series}
+                            href={`/search?setname=${set.name.replace("&", "%26")}&series=${set.series.replace("&", "%26")}`}
+                        >
+                            <img 
+                                src={set.images.logo} 
+                                className='h-12 md:h-16 hover:scale-110' 
+                                alt={`${set.name} logo`}
+                            />
+                        </Link>
+                    )}
+                </div>
+                
+            </div>
+        )
+    })
 
-    const allCardEl = setCards.map(card => 
-        <Card
-            key={card.id}
-            {...card}
-        />
-    )
-
-    const getSetCards = async ()=>{
-        setLoading((prev) => ({...prev, cards:true}))
-        try {
-            const res = await fetch(`api/cardsets/${selectedSet}`)
-            const data:[PokemonTCG.Card]|[] = await res.json()
-            const sortedData = data.sort(function(a,b) {
-                return Number(a.number) - Number(b.number)
-            })
-            setSetCards(sortedData)
-        } catch (error) {
-            console.log(error)
-        }
-        setLoading((prev) => ({...prev, cards:false}))
-    }
-
-    //get up to date list of series and card sets from context to create menus
-    useEffect(() => {
-        const getAllSets = () => {
-            !AllCardSets.length
-                ? setLoading((prev)=>({...prev, series:true}))
-                : setLoading((prev)=>({...prev, series:false}))
-
-            const sortedSets = AllCardSets.sort(function(a,b){
-                return Number(new Date(a.releaseDate)) - Number(new Date(b.releaseDate))
-            })
-            setCardSets(sortedSets)
-            setCardSeries(Array.from(new Set(sortedSets.map(set => set.series))))
-        }
-        getAllSets()
-    }, [AllCardSets]) 
+    const setIconTableEl = sortedSeries.map(series => {
+        const seriesSets = sortedSets.filter(set => set.series === series)
+        const setTableEl = seriesSets.map(set => 
+            <tr key={set.name+set.series} className='even:bg-gray-300 odd:bg-white py-1'>
+                <td className='w-12 pl-2'><img src={set.images.symbol} className='h-8'/></td>
+                <td className='w-52'>
+                    <Link 
+                        href={`/search?setname=${set.name.replace("&", "%26")}&series=${set.series.replace("&", "%26")}`}
+                        className='hover:text-red-500'
+                    >
+                        {set.name}
+                    </Link>
+                </td>
+                <td className='w-22 pr-2'>{set.printedTotal} cards</td>
+            </tr>
+        )
+        return (
+            <table key={series}>
+                <thead className="text-2xl bg-gray-800 text-white font-rye h-16">
+                    <tr>
+                        <th colSpan={3} >{series}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {setTableEl}
+                </tbody>
+            </table>
+            
+        )
+    })
 
     return (
-        <section className='page_container gap-4 text-black'>
-            { loading.series 
-                ? <div>...loading</div>
-                : <div className='flex gap-2'>
-                    <label htmlFor="series-select">Choose a series</label>
-                    <select 
-                        name="series-select" 
-                        id="series-select" 
-                        className='select_field' 
-                        onChange={(e)=>setSelectedSeries(e.target.value)}
-                    >
-                        <option value={""}>Choose a series</option>
-                        {cardSeriesOp}
-                    </select>
-                </div>
-            }
-            { selectedSeries
-                ? <div className='flex flex-col items-center'>
-                     <div className='flex gap-2'>
-                        <label htmlFor="set-select">Choose a set</label>
-                        <select 
-                            name="set-select" 
-                            id="set-select" 
-                            className='select_field'
-                            onChange={(e)=>setSelectedSet(e.target.value)}
-                        >
-                            <option value={""}>Choose a set</option>
-                            {cardSetOp}
-                        </select>
-                    </div>
-                    <button 
-                        type="button"
-                        className='nav_btn'
-                        onClick={()=>getSetCards()}
-                    >
-                        Search
-                    </button>
-                </div>              
-                : null
-            }
-            { loading.cards
-                ? <div>...loading</div>
-                :  setCards 
-                    ? <div className='flex flex-wrap gap-4 justify-center'>
-                    {allCardEl} </div>
-                    : null                
-            }   
+        <section className='page_container text-black '>
+            <div className='flex gap-1 self-start justify-self-start items-center mb-4 ml-8'>
+                <h3>Grid</h3>
+                <Switch  
+                    onChange={()=>{setViewMode(prev => !prev)}} 
+                    checked={viewMode} 
+                    checkedIcon={<BsFillGridFill className="w-full h-full p-1 text-white"/>}
+                    uncheckedIcon={<BsTable className="w-full h-full p-1 text-white"/>}
+                />
+                <h3>Table</h3>
+            </div>
+        
+            
+            {viewMode 
+                ? <div>{setIconGridEl}</div>
+                : <div className='flex flex-wrap items-start justify-center sm:gap-2 gap-4'>{setIconTableEl}</div>
+            }                         
         </section>
     )
 }

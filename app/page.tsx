@@ -11,12 +11,12 @@ export default function Index() {
     <section className="page_container text-slate-600">
       <section className="max-w-3xl flex flex-col justify-center items-center">
         <h1 className="text-3xl font-extrabold text-center">
-          Welcome{user?.name ? " " + user.name : null}, to the PokemonTCG Card Search! 
+          Welcome{user?.name ? " " + user.name : null}, to the PTCG Deckbuilder! 
         </h1>
 
-        <p className="text-xl mt-8 text-center">This site allows you to search for any card from the Pokemon Trading Card Game. </p>
-        <p className="text-xl mt-8 text-center">I made this site to practice and learn Next.js and Typescript. Eventually I intend to allow users to create and store entire decks and add animation to card image loading using Framer Motion.</p>
-        <p className="text-xl mt-8 text-center">For now only card searching is supported.</p>
+        <p className="text-xl mt-8 text-center">This site allows you to search for any card from the Pokemon Trading Card Game and build decks with them. </p>
+        <p className="text-xl mt-8 text-center">I made this site to practice and learn Next.js and Typescript.</p>
+        <p className="text-xl mt-8 text-center">2nd Oct 2023, deckbuilding function is up. Decks can be created, saved, editted and deleted.</p>
         <p className="text-xl mt-8 text-center">Cards can be searched by name, type or set. Advanced search allows searching by energy type, rarity, regulation mark or subtype. With more to be added over time.</p>
         { user 
           ? <p className="text-xl mt-8 text-center">

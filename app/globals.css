@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Changa+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
+
 
 @tailwind base;
 @tailwind components;
@@ -27,7 +30,7 @@
 }
 
 .main_bg:before {
-  background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #aebfc6 100%);
+  background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fff 100%);
   position: absolute;
   content: "";
   z-index: 2;
@@ -55,7 +58,7 @@
   max-width: 640px;
   background-image: radial-gradient(
       at 27% 37%,
-      hsla(215, 98%, 61%, 1) 0px,
+      hsla(215, 98%, 61%, 0) 0px,
       transparent 0%
     ),
     radial-gradient(at 97% 21%, hsla(125, 98%, 72%, 1) 0px, transparent 50%),
@@ -71,10 +74,6 @@
   filter: blur(100px) saturate(150%);
   top: 80px;
   opacity: 0.15;
-}
-
-.dropdown_menu {
-  @apply absolute right-0 top-full mt-3 w-full p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2 justify-end items-end
 }
 
 .dropdown_link {

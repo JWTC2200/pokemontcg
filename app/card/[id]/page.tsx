@@ -29,8 +29,6 @@ const SingleCard = () => {
         getSingleCard()
     }, [])
 
-    console.log(cardData?.nationalPokedexNumbers)
-
     let headingStyles = "bg-gray-200 text-black "
 
     if(cardData?.types != undefined) {
@@ -180,7 +178,7 @@ const SingleCard = () => {
                             : null
                         }
                         <Link
-                            href={`/search?set.name=${cardData.set.name.replace("&", "%26")}&set.series=${cardData.set.series.replace("&", "%26")}`}
+                            href={`/search?setname=${cardData.set.name.replace("&", "%26")}&series=${cardData.set.series.replace("&", "%26")}`}
                             className='hover:text-orange-800 hover:underline flex gap-2 items-center'
                         >
                             {cardData.set.series}: {cardData.set.name} <FaExternalLinkAlt/>

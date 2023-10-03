@@ -29,6 +29,8 @@ const config: Config = {
     },
     fontFamily: {
       sans: ["Inter", "sans-serif"],
+      changa: ["Changa", "sans-serif"],
+      rye:["Rye", "sans-serif"]
     }
   },
   plugins: [],

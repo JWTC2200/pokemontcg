@@ -118,6 +118,14 @@ const SingleDeck = () => {
       console.log("Please log in before saving")
       return
     }
+    if (!deckName) {
+      toast.warning("Please enter a name for the deck!", {autoClose: 3000})
+      return
+    }
+    if (deckName.length >=25) {
+      toast.warning("Deck name too long!", {autoClose: 3000})
+      return
+    }
     setSavingDeck(true)
     if (id === "newdeck") {
       try {
@@ -150,9 +158,9 @@ const SingleDeck = () => {
           })
         })
         if (res.ok) {
-          console.log("deck saved")
+          toast.success("deck saved!")
         } else {
-          console.log("save failed")
+          toast.error("save failed")
         }
       } catch (error) {
         console.log(error)
@@ -207,7 +215,7 @@ const SingleDeck = () => {
 
   return (
     <div
-        className='page_container relative'
+        className='page_container'
     > 
       <ToastContainer
         toastClassName={"w-60 overflow-hidden"}
@@ -215,6 +223,7 @@ const SingleDeck = () => {
         closeOnClick
         autoClose={1000}
         newestOnTop
+        pauseOnFocusLoss={false}
       />
       { showForm
         ? <div
@@ -382,6 +391,7 @@ const SingleDeck = () => {
               onChange={(e)=>setDeckName(e.target.value)}
               value={deckName}
               className="input_field"
+              maxLength={24}
             ></input>
         </form>      
         <button 
