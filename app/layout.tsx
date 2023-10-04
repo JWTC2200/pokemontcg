@@ -7,8 +7,8 @@ import SetContextProvider from '@/components/SetContext'
 import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
-  title: 'PokemonTCG Card Search',
-  description: 'PokemonTCG Card Search',
+  title: 'PTCG Deckbuilder',
+  description: 'PokemonTCG Deckbuilder',
 }
 
 export default function RootLayout({

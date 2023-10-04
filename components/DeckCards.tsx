@@ -15,7 +15,7 @@ const DeckCards = ({image, addCard, removeCard, inDeck}: Tprops ) => {
     >
         <img
             src={image}
-            className='cursor-pointer card_outline hover:scale-110'
+            className='cursor-pointer card_outline hover:scale-105'
         />
         <div className="flex justify-center px-3 pt-2 text-amber-100 text-sm">
             {inDeck

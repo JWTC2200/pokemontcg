@@ -227,7 +227,7 @@ const SingleDeck = () => {
       />
       { showForm
         ? <div
-          className='w-full bg-white text-black flex items-center mt-4 justify-between px-4 py-1 cursor-pointer'
+          className='w-full bg-white text-black flex items-center mt-0 justify-between px-4 py-1 cursor-pointer'
           onClick={()=>setShowForm(prev=>!prev)}
         >
           Hide search
