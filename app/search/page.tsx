@@ -35,7 +35,8 @@ const Search = () => {
     const [itemOffset, setItemOffset] = useState(0)
     const endOffset = itemOffset + itemsPerPage
     const currentItems = cardData.slice(itemOffset, endOffset)
-    const pageCount = Number(Math.ceil(Number(cardData.length) / Number(itemsPerPage)))
+    const pageCount = Math.ceil(cardData.length / itemsPerPage)
+    console.log(pageCount)
     const handlePageClick = (e:any) => {
         const newOffset = (e.selected * itemsPerPage) % cardData.length
         setItemOffset(newOffset)
@@ -119,9 +120,6 @@ const Search = () => {
         try {
             const res = await fetch(`api/cards?${query.toString()}`) 
             const data = await res.json()
-            console.log(data)
-           
-
             if(!data.length) {
                 setCardData(data)
                 setSearching(false)
