@@ -35,8 +35,7 @@ const Search = () => {
     const [itemOffset, setItemOffset] = useState(0)
     const endOffset = itemOffset + itemsPerPage
     const currentItems = cardData.slice(itemOffset, endOffset)
-    const pageCounter = Math.ceil(cardData.length / itemsPerPage)
-    console.log(pageCounter)
+    const pageCount = Math.ceil(cardData.length / itemsPerPage)
     const handlePageClick = (e:any) => {
         const newOffset = (e.selected * itemsPerPage) % cardData.length
         setItemOffset(newOffset)
@@ -410,7 +409,7 @@ const Search = () => {
                 onPageChange={handlePageClick}
                 pageRangeDisplayed={3}
                 marginPagesDisplayed={2}
-                pageCount={pageCounter}
+                pageCount={pageCount}
                 previousLabel={<FaLessThan/>}
                 renderOnZeroPageCount={null}
                 className='flex gap-2 text-black items-center font-semibold lg:text-xl'
