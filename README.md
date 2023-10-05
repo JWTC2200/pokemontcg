@@ -7,7 +7,9 @@ This as a personal project to learn NextJS and Typescript and I hope you like it
 Login required to use the site
 
 In progress: 
+
 More search fields
+
 Improve deckbuilding
 
 Issue with react-paginate 
