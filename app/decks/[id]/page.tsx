@@ -87,6 +87,7 @@ const SingleDeck = () => {
           return Number(new Date(b.set.releaseDate)) - Number(new Date(a.set.releaseDate))
       })
       setCardData(sortedData)
+      setShowForm(false)
       setNoResults(false)
     } catch(error) {
       console.log(error)
@@ -227,7 +228,7 @@ const SingleDeck = () => {
       />
       { showForm
         ? <div
-          className='w-full bg-white text-black flex items-center mt-0 justify-between px-4 py-1 cursor-pointer'
+          className='w-full bg-white text-black flex items-center mt-4 justify-between px-4 py-1 cursor-pointer'
           onClick={()=>setShowForm(prev=>!prev)}
         >
           Hide search

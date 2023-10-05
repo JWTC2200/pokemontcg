@@ -8,6 +8,8 @@ import Card from '@/components/Card'
 import { cardSubtypesList, cardRaritiesList, superTypes, pokemonTypes } from '@/data/carddata'
 import { CardSetContext } from '@/components/SetContext'
 import { IoMdClose, IoMdOpen } from "react-icons/io"
+import { FaLessThan, FaGreaterThan } from "react-icons/fa"
+import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai'
 import ReactPaginate from 'react-paginate'
 
 const Search = () => {
@@ -20,6 +22,7 @@ const Search = () => {
     const router = useRouter()
     const searchParams = useSearchParams()
 
+    const [toggleForm, setToggleForm] = useState(true)
     const [toggleAdvanced, setToggleAdvanced] = useState(false)
     const [hasSearched, setHasSearched] = useState(false)
     const [searching, setSearching] = useState(false)
@@ -27,7 +30,7 @@ const Search = () => {
     const [firstLoad, setFirstLoad] = useState(true)
 
     // pagination 
-    const itemsPerPage = 14
+    const [itemsPerPage, setItemsPerPage] = useState(10)
     const [cardData, setCardData] = useState<[PokemonTCG.Card]|[]>([])
     const [itemOffset, setItemOffset] = useState(0)
     const endOffset = itemOffset + itemsPerPage
@@ -130,6 +133,7 @@ const Search = () => {
                 return Number(new Date(b.set.releaseDate)) - Number(new Date(a.set.releaseDate))
             })
             setCardData(sortedData)
+            setToggleForm(false)
             setSearching(false)
         } catch (error) {
             console.log(error)
@@ -145,211 +149,250 @@ const Search = () => {
 
     return (
         <section className="page_container relative">
-            <form 
-                className='text-black flex flex-col items-start w-full p-2'
-                onSubmit={handleSubmit}
-            > 
-                {/* basic search options name, card type then sets */}
-                <div className="flex flex-wrap gap-2 w-full lg:justify-center sm:flex-nowrap">
-                    <div className='search_option'>
-                        <label htmlFor="name" className="text-xl font-semibold">Card Name: </label>
-                        <input 
-                            id="name"
-                            name="name" 
-                            placeholder='Card name'
-                            onChange={(e)=>handleChange(e)}
-                            value={searchQuery.name}
-                            className="input_field"
-                        />
-                    </div>
-                    <div className='search_option'>
-                        <label htmlFor="supertype" className="text-xl font-semibold">Card Type: </label>
-                        <select 
-                            id="supertype" 
-                            name="supertype"
-                            onChange={(e)=>handleChange(e)}
-                            value={searchQuery.supertype}
-                            className='select_field'
-                        >
-                            <option value="" defaultValue="">All</option>
-                            {superTypes.map(supertype => 
-                                <option 
-                                    value={supertype} 
-                                    key={supertype}
-                                >
-                                    {supertype}
-                                </option>   
-
-                            )}
-                        </select>
-                    </div>
+            { toggleForm
+                ? <div
+                className='w-full bg-white text-black flex items-center mt-4 justify-between px-4 py-1 cursor-pointer'
+                onClick={()=>setToggleForm(prev=>!prev)}
+                >
+                Hide search
+                <AiOutlineMinusCircle className="text-2xl"/>       
                 </div>
-                <div className="flex flex-wrap gap-2 mt-4 w-full lg:justify-center sm:flex-nowrap">
-                    <div className='search_option'>
-                        <label htmlFor="series" className="text-xl font-semibold">Sort By Series: </label>
-                        <select
-                            id="series"
-                            name='series'
-                            onChange={(e)=>{
-                                handleChange(e)
-                                setSearchQuery((prev) => ({...prev, setname: "" }))
-                            }}
-                            value={searchQuery.series}
-                            className='select_field'
-                        >
-                            <option value="" defaultValue="">Select series</option>
-                            {Array.from(new Set(sortedCardSets.map(set => set.series))).map(series => 
-                                <option
-                                    value={series}
-                                    key={series}
-                                >
-                                    {series}
-                                </option>    
-                            )}
-                        </select>
-                    </div>                    
-                    <div className='search_option'>
-                        <label htmlFor="setname" className="text-xl font-semibold">Set Name: </label>
-                        <select
-                            id="setname"
-                            name="setname"
-                            onChange={(e)=>handleChange(e)}
-                            value={searchQuery.setname}
-                            className='select_field'
-                        >
-                            <option value="" defaultValue="">
-                                Select set
-                            </option>
-                            { searchQuery.series 
-                                ? sortedCardSets.filter(sets => sets.series === searchQuery.series).map(sets => 
-                                    <option
-                                        value={sets.name}
-                                        key={sets.name+sets.series}
-                                    >
-                                        {`${sets.name} (${sets.printedTotal} cards)`}
-                                    </option>
-                                )
-                                : sortedCardSets.map(sets => 
-                                    <option
-                                        value={sets.name}
-                                        key={sets.name+sets.series}
-                                    >
-                                        {`${sets.name} (${sets.printedTotal} cards)`}
-                                    </option>
-                                )
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div className="flex w-full sm:justify-center">
-                    <div 
-                        className='text-white bg-black my-4 px-3 py-1 rounded-xl gap-2 flex items-center cursor-pointer'
-                        onClick={()=>setToggleAdvanced(prev=>!prev)}
-                    >
-                        Advanced options {toggleAdvanced ? <IoMdClose/> : <IoMdOpen/>}
-                    </div>
-                </div>
-                { toggleAdvanced 
-                    ? <div className="flex flex-wrap gap-2 mb-2 w-full lg:justify-center">
+                : <div
+                className='w-full bg-white text-black flex items-center mt-4 justify-between px-4 py-1 cursor-pointer'
+                onClick={()=>setToggleForm(prev=>!prev)}
+                >
+                Search for cards: 
+                <AiOutlinePlusCircle className="text-2xl"/>          
+                </div>     
+            }
+            { toggleForm 
+                ? <form 
+                    className='text-black flex flex-col items-start w-full p-2 pb-4 bg-slate-400 bg-opacity-20'
+                    onSubmit={handleSubmit}
+                > 
+                    {/* basic search options name, card type then sets */}
+                    <div className="flex flex-wrap gap-2 w-full lg:justify-center sm:flex-nowrap">
                         <div className='search_option'>
-                            <label htmlFor="types" className="text-xl font-semibold">Energy type: </label>
-                            <select 
-                                id="types" 
-                                name="types"
-                                onChange={(e)=>handleChange(e)}
-                                value={searchQuery.types}
-                                className='select_field'
-                            >
-                                <option value="" defaultValue="">Select energy type</option>
-                                {pokemonTypes.map(type => 
-                                    <option 
-                                        value={type} 
-                                        key={type}
-                                    >
-                                        {type}
-                                    </option>   
-
-                                )}
-                            </select>
-                        </div>
-                        <div className='search_option'>
-                            <label htmlFor="rarity" className="text-xl font-semibold">Card rarity: </label>
-                            <select 
-                                id="rarity" 
-                                name="rarity"
-                                onChange={(e)=>handleChange(e)}
-                                value={searchQuery.rarity}
-                                className='select_field'
-                            >
-                                <option value="" defaultValue="">Card rarity</option>
-                                {cardRaritiesList.map(rarity => 
-                                    <option 
-                                        value={rarity} 
-                                        key={rarity}
-                                    >
-                                        {rarity}
-                                    </option>   
-
-                                )}
-                            </select>
-                        </div>   
-                        <div className='search_option'>
-                            <label htmlFor="regulationMark" className="text-xl font-semibold">Regulation mark: </label>
+                            <label htmlFor="name" className="text-xl font-semibold">Card Name: </label>
                             <input 
-                                id="regulationMark" 
-                                name="regulationMark"
-                                placeholder='Regulation mark'
+                                id="name"
+                                name="name" 
+                                placeholder='Card name'
                                 onChange={(e)=>handleChange(e)}
-                                value={searchQuery.regulationMark}
+                                value={searchQuery.name}
                                 className="input_field"
                             />
                         </div>
                         <div className='search_option'>
-                            <label htmlFor="subtypes" className="text-xl font-semibold">Subtypes: </label>
+                            <label htmlFor="supertype" className="text-xl font-semibold">Card Type: </label>
                             <select 
-                                id="subtypes" 
-                                name="subtypes"
+                                id="supertype" 
+                                name="supertype"
                                 onChange={(e)=>handleChange(e)}
-                                value={searchQuery.subtypes}
+                                value={searchQuery.supertype}
                                 className='select_field'
                             >
-                                <option value="" defaultValue="">Choose subtype</option>
-                                {cardSubtypesList.map(subtype => 
+                                <option value="" defaultValue="">All</option>
+                                {superTypes.map(supertype => 
                                     <option 
-                                        value={subtype} 
-                                        key={subtype}
+                                        value={supertype} 
+                                        key={supertype}
                                     >
-                                        {subtype}
+                                        {supertype}
                                     </option>   
 
                                 )}
-                                
                             </select>
-                        </div>                 
+                        </div>
                     </div>
-                    : null                    
-                }
-                <div className="flex gap-2 w-full sm:justify-center">
-                    <button
-                        type="submit"
-                        className='self-center nav_btn mt-2'
-                        disabled={searching}
-                    >
-                        Search
-                    </button>
-                    <button 
-                        type="reset"
-                        className='self-center nav_btn mt-2'
-                        onClick={()=>{resetForm()}}
-                    >
-                        Reset
-                    </button>            
-                </div>
-                
-            </form>
+                    <div className="flex flex-wrap gap-2 mt-4 w-full lg:justify-center sm:flex-nowrap">
+                        <div className='search_option'>
+                            <label htmlFor="series" className="text-xl font-semibold">Sort By Series: </label>
+                            <select
+                                id="series"
+                                name='series'
+                                onChange={(e)=>{
+                                    handleChange(e)
+                                    setSearchQuery((prev) => ({...prev, setname: "" }))
+                                }}
+                                value={searchQuery.series}
+                                className='select_field'
+                            >
+                                <option value="" defaultValue="">Select series</option>
+                                {Array.from(new Set(sortedCardSets.map(set => set.series))).map(series => 
+                                    <option
+                                        value={series}
+                                        key={series}
+                                    >
+                                        {series}
+                                    </option>    
+                                )}
+                            </select>
+                        </div>                    
+                        <div className='search_option'>
+                            <label htmlFor="setname" className="text-xl font-semibold">Set Name: </label>
+                            <select
+                                id="setname"
+                                name="setname"
+                                onChange={(e)=>handleChange(e)}
+                                value={searchQuery.setname}
+                                className='select_field'
+                            >
+                                <option value="" defaultValue="">
+                                    Select set
+                                </option>
+                                { searchQuery.series 
+                                    ? sortedCardSets.filter(sets => sets.series === searchQuery.series).map(sets => 
+                                        <option
+                                            value={sets.name}
+                                            key={sets.name+sets.series}
+                                        >
+                                            {`${sets.name} (${sets.printedTotal} cards)`}
+                                        </option>
+                                    )
+                                    : sortedCardSets.map(sets => 
+                                        <option
+                                            value={sets.name}
+                                            key={sets.name+sets.series}
+                                        >
+                                            {`${sets.name} (${sets.printedTotal} cards)`}
+                                        </option>
+                                    )
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div className="flex w-full sm:justify-center">
+                        <div 
+                            className='text-white bg-black my-4 px-3 py-1 rounded-xl gap-2 flex items-center cursor-pointer'
+                            onClick={()=>setToggleAdvanced(prev=>!prev)}
+                        >
+                            Advanced options {toggleAdvanced ? <IoMdClose/> : <IoMdOpen/>}
+                        </div>
+                    </div>
+                    { toggleAdvanced 
+                        ? <div className="flex flex-wrap gap-2 mb-2 w-full lg:justify-center">
+                            <div className='search_option'>
+                                <label htmlFor="types" className="text-xl font-semibold">Energy type: </label>
+                                <select 
+                                    id="types" 
+                                    name="types"
+                                    onChange={(e)=>handleChange(e)}
+                                    value={searchQuery.types}
+                                    className='select_field'
+                                >
+                                    <option value="" defaultValue="">Select energy type</option>
+                                    {pokemonTypes.map(type => 
+                                        <option 
+                                            value={type} 
+                                            key={type}
+                                        >
+                                            {type}
+                                        </option>   
+
+                                    )}
+                                </select>
+                            </div>
+                            <div className='search_option'>
+                                <label htmlFor="rarity" className="text-xl font-semibold">Card rarity: </label>
+                                <select 
+                                    id="rarity" 
+                                    name="rarity"
+                                    onChange={(e)=>handleChange(e)}
+                                    value={searchQuery.rarity}
+                                    className='select_field'
+                                >
+                                    <option value="" defaultValue="">Card rarity</option>
+                                    {cardRaritiesList.map(rarity => 
+                                        <option 
+                                            value={rarity} 
+                                            key={rarity}
+                                        >
+                                            {rarity}
+                                        </option>   
+
+                                    )}
+                                </select>
+                            </div>   
+                            <div className='search_option'>
+                                <label htmlFor="regulationMark" className="text-xl font-semibold">Regulation mark: </label>
+                                <input 
+                                    id="regulationMark" 
+                                    name="regulationMark"
+                                    placeholder='Regulation mark'
+                                    onChange={(e)=>handleChange(e)}
+                                    value={searchQuery.regulationMark}
+                                    className="input_field"
+                                />
+                            </div>
+                            <div className='search_option'>
+                                <label htmlFor="subtypes" className="text-xl font-semibold">Subtypes: </label>
+                                <select 
+                                    id="subtypes" 
+                                    name="subtypes"
+                                    onChange={(e)=>handleChange(e)}
+                                    value={searchQuery.subtypes}
+                                    className='select_field'
+                                >
+                                    <option value="" defaultValue="">Choose subtype</option>
+                                    {cardSubtypesList.map(subtype => 
+                                        <option 
+                                            value={subtype} 
+                                            key={subtype}
+                                        >
+                                            {subtype}
+                                        </option>   
+
+                                    )}
+                                    
+                                </select>
+                            </div>                 
+                        </div>
+                        : null                    
+                    }
+                    <div className="flex gap-2 w-full sm:justify-center">
+                        <button
+                            type="submit"
+                            className='self-center nav_btn mt-2'
+                            disabled={searching}
+                        >
+                            Search
+                        </button>
+                        <button 
+                            type="reset"
+                            className='self-center nav_btn mt-2'
+                            onClick={()=>{resetForm()}}
+                        >
+                            Reset
+                        </button>            
+                    </div>
+                    
+                </form>
+                : null
+            }
+            
             {
                 noQuery 
                 ? <div className="text-red-500 text-xl mt-4">Please provide at least one search option!</div>
+                : null
+            }
+            {dataEl.length 
+                ? <form className='nav_btn px-2 my-4 self-start ml-2 sm:self-center cursor-pointer'>
+                    <label htmlFor='cardsperpage'>Display:</label>
+                    <select 
+                        id="cardsperpage"
+                        name="cardsperpage"
+                        value={itemsPerPage}
+                        onChange={(e)=>setItemsPerPage(Number(e.target.value))}
+                        className='w-12 text-center bg-transparent'
+                    >
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={30}>30</option>
+                        <option value={40}>40</option>
+                        <option value={50}>50</option>
+                    </select>
+                </form>
                 : null
             }
             <section className='flex flex-wrap gap-4 justify-center pb-16 w-full'>            
@@ -365,14 +408,16 @@ const Search = () => {
             </section>
             <ReactPaginate
                 breakLabel="..."
-                nextLabel=">"
+                nextLabel={<FaGreaterThan/>}
                 onPageChange={handlePageClick}
                 pageRangeDisplayed={3}
+                marginPagesDisplayed={2}
                 pageCount={pageCount}
-                previousLabel="<"
+                previousLabel={<FaLessThan/>}
                 renderOnZeroPageCount={null}
-                className='flex gap-4 text-black'
+                className='flex gap-2 text-black items-center font-semibold lg:text-xl'
                 activeClassName='underline'
+                disabledLinkClassName='opacity-25'
             />
         </section>
     )
