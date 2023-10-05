@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { TDeck } from "../types/types"
-import Card from "@/components/Card"
-import { PokemonTCG } from "pokemon-tcg-sdk-typescript"
 import { useUser } from "@auth0/nextjs-auth0/client"
 import Link from "next/link"
 import { deckSorting } from "../utils/decksorting"
@@ -23,7 +21,10 @@ const Decks = () => {
                 cache: "no-store"
             })
             const data = await res.json()
-            setDeckData(data)            
+            const sortedData = data.sort((a:TDeck,b:TDeck)=>{
+                return Number(new Date(b.created_at)) - Number(new Date(a.created_at))
+            })
+            setDeckData(sortedData)            
         } catch (error) {
             console.log(error)
     }}
@@ -38,7 +39,10 @@ const Decks = () => {
         const {sortedPokemon, sortedTrainers, sortedEnergy} = deckData.length ? deckSorting(deck.cards) : deckSorting([])
 
         return (
-            <tr className='even:bg-gray-300 odd:bg-white py-1 text-black'>
+            <tr 
+                key={deck.created_at}
+                className='even:bg-gray-300 odd:bg-white py-1 text-black'
+            >
                 <td className="pl-2">
                     <Link
                         href={`/decks/${deck.id}`}

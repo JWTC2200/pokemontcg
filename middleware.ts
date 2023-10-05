@@ -3,5 +3,5 @@ import { withMiddlewareAuthRequired } from "@auth0/nextjs-auth0/edge";
 export default withMiddlewareAuthRequired()
 
 export const config = {
-    matcher: ["/search", "/cardsets", "/card", "/decks"]
+    matcher: ["/search", "/cardsets", "/card", "/decks", "/decks/:path*"]
 }

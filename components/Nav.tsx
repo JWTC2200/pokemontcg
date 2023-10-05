@@ -1,10 +1,11 @@
 "use client"
 
 import { useUser } from "@auth0/nextjs-auth0/client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { GiHamburgerMenu } from "react-icons/gi"
-import { BiSolidToTop } from "react-icons/bi"
+import ToTopButton from "./ToTopButton"
+
 import { usePathname } from "next/navigation"
 
 
@@ -12,17 +13,7 @@ const Nav = () => {
 
   const { user } = useUser()
   const [menuToggle, setMenuToggle] = useState(false)
-  const [scrollVis, setScrollVis] = useState(false)
 
-  useEffect(()=> {
-    const handleScrollVis = ()=> {
-      window.scrollY > screen.height ? setScrollVis(true) : setScrollVis(false)
-    }
-    window.addEventListener("scroll", handleScrollVis)
-    return ()=> {
-      window.addEventListener("scroll", handleScrollVis)
-    }
-  },[])
  
   const pathname = usePathname()
 
@@ -34,6 +25,8 @@ const Nav = () => {
       <div className="pulse_bead bottom-0 left-20"></div>
       <div className="pulse_bead top-4 right-6"></div>
       <div className="pulse_bead top-1/2 right-1/2"></div>
+
+      <ToTopButton/>
 
       <Link href="/">
           <h1 className="text-2xl font-bold ">PTCG Deckbuilder</h1>
@@ -121,15 +114,7 @@ const Nav = () => {
             Login
           </Link>
         }
-      </section>
-      
-      <button 
-        type="button"
-        className={`fixed text-4xl bg-slate-800 bg-opacity-75 rounded-full p-1 right-8 bottom-12 ${scrollVis ? "": "hidden"}`}
-        onClick={()=>window.scrollTo({top:0, behavior:"smooth"})}
-      >
-        <BiSolidToTop/>
-      </button>        
+      </section>       
     </nav>
   )
 }

@@ -158,6 +158,7 @@ const SingleDeck = () => {
           method: "PUT",
           body: JSON.stringify({
             id: id,
+            owner: user.sub,
             deckname: deckName,
             cards: deckCards,
           })
@@ -175,11 +176,15 @@ const SingleDeck = () => {
   }
 
   const handleDeleteDeck = async () => {
+    if(!user) {
+      return
+    }
     try {
       const res = await fetch("/api/decks", {
         method: "DELETE",
         body: JSON.stringify ({
-          id: id
+          id: id,
+          owner: user.sub,
         })
       })
       if (res.ok) {

@@ -1,5 +1,4 @@
 import React from 'react'
-import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 
 type Tprops = {
     image: string,
@@ -12,7 +11,7 @@ type Tprops = {
 const DeckCards = ({image, addCard, removeCard, inDeck, number}: Tprops ) => {
   return (
     <div
-        className='w-40 relative hover:scale-105'
+        className='w-40 relative hover:scale-105 z-0'
     >   
         { number 
             ? <div 
