@@ -6,16 +6,25 @@ type Tprops = {
     addCard: () => void
     removeCard: () => void
     inDeck: boolean
+    number: number
 }
 
-const DeckCards = ({image, addCard, removeCard, inDeck}: Tprops ) => {
+const DeckCards = ({image, addCard, removeCard, inDeck, number}: Tprops ) => {
   return (
     <div
-        className='w-40'
-    >
+        className='w-40 relative hover:scale-105'
+    >   
+        { number 
+            ? <div 
+                className='absolute bottom-1/4 left-1/2 text-4xl font-bold text-red-700 -translate-x-1/2 stroke-black bg-white bg-opacity-20 rounded-full'
+            >
+                x{number}
+            </div>
+            : null        }
+        
         <img
             src={image}
-            className='cursor-pointer card_outline hover:scale-105'
+            className='cursor-pointer card_outline '
         />
         <div className="flex justify-center px-3 pt-2 text-amber-100 text-sm">
             {inDeck

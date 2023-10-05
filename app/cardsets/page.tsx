@@ -83,16 +83,14 @@ const CardSets = () => {
     return (
         <section className='page_container text-black'>
             <div className='flex gap-1 self-start justify-self-start items-center mb-4 ml-8'>
-                <h3>Grid</h3>
                 <Switch  
                     onChange={()=>{setViewMode(prev => !prev)}} 
                     checked={viewMode} 
-                    checkedIcon={<BsFillGridFill className="w-full h-full p-1 text-white"/>}
-                    uncheckedIcon={<BsTable className="w-full h-full p-1 text-white"/>}
+                    checkedIcon={<BsTable className="w-full h-full p-1 text-white"/>}
+                    uncheckedIcon={< BsFillGridFill className="w-full h-full p-1 text-white"/>}
                 />
-                <h3>Tables</h3>
             </div>  
-            {viewMode 
+            {!viewMode 
                 ? <div>{setIconGridEl}</div>
                 : <div className='flex flex-wrap items-start justify-center sm:gap-2 gap-4'>{setIconTableEl}</div>
             }                         

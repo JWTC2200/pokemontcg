@@ -3,15 +3,18 @@
 import { TDeck } from '@/app/types/types'
 import { PokemonTCG } from 'pokemon-tcg-sdk-typescript'
 import { deckSorting } from '@/app/utils/decksorting'
-import { useParams, useRouter, redirect } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { CardSetContext } from '@/components/SetContext'
 import React, { useEffect, useState, useContext } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import DeckCards from '@/components/DeckCards'
 import { superTypes } from '@/data/carddata'
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai"
+import { BsFillGridFill } from "react-icons/bs"
+import {TbCardsFilled} from "react-icons/tb"
 import { addCardCheck } from '@/app/utils/editdeckchecks'
 import { useUser } from '@auth0/nextjs-auth0/client'
+import Switch from "react-switch"
 
 export const dynamic = "force-dynamic"
 export const revalidate = 0
@@ -26,6 +29,7 @@ const SingleDeck = () => {
   const [deckCards, setDeckCards] = useState<[] | Array<PokemonTCG.Card>>([])
   const [savingDeck, setSavingDeck] = useState(false)
   const [deleteDeck, setDeleteDeck] = useState(false)
+  const [viewMode, setViewMode] = useState(true)
 
   // card set data
   const AllCardSets = useContext(CardSetContext)
@@ -214,6 +218,40 @@ const SingleDeck = () => {
 
   const { sortedPokemon, sortedTrainers, sortedEnergy } = deckCards.length ? deckSorting(deckCards) : deckSorting([])
 
+  // display toggles
+  const displayedCards = (data: Array<PokemonTCG.Card>) => {
+    if (!viewMode) {
+      return( data.map((card, index) => 
+        <DeckCards 
+          key={`${card.id}${index}`}
+          image={card.images.small}
+          addCard={()=>addCard(card)}
+          removeCard={()=>removeCard(card)}
+          inDeck={true}
+          number={0}
+        />
+      ))
+    } else {
+      // get number of each unique card name
+      const uniques = Array.from(new Set(data.map(card => card.name)))
+      const uniqueCards = uniques.map(name => {
+        const firstCopy = data.find(card => card.name === name)
+        const numberCopy = data.filter(card => card.name === name).length
+        return {card: firstCopy!, number: numberCopy}
+      })
+      return (uniqueCards.map((card, index) => 
+        <DeckCards
+          key={`${card.card.id}${index}`}
+          image={card.card.images.small}
+          addCard={()=>addCard(card.card)}
+          removeCard={()=>removeCard(card.card)}
+          inDeck={true}
+          number={card.number}
+        />
+      ))
+    }   
+  }
+
   return (
     <div
         className='page_container'
@@ -226,6 +264,30 @@ const SingleDeck = () => {
         newestOnTop
         pauseOnFocusLoss={false}
       />
+      <div className='flex flex-col justify-center items-center w-full sm:flex-row'>
+        <form
+          onSubmit={(e)=>e.preventDefault()}
+          className='text-black flex items-center gap-2 items-start p-2'
+        >
+          <input
+            id="deckname"
+            name="deckname"
+            placeholder="Deck name"
+            onChange={(e)=>setDeckName(e.target.value)}
+            value={deckName}
+            className="w-full placeholder-gray-500 px-2 h-8 bg-transparent outline-none rounded-lg focus:bg-white"
+            maxLength={24}
+          />
+        </form>      
+        <button 
+          type="button"
+          onClick={handleSaveDeck}
+          className='py-1 px-2 bg-green-400 text-black rounded-2xl min-w-max'
+          disabled={savingDeck}
+        >
+          Save deck
+        </button>
+      </div>
       { showForm
         ? <div
           className='w-full bg-white text-black flex items-center mt-4 justify-between px-4 py-1 cursor-pointer'
@@ -256,6 +318,7 @@ const SingleDeck = () => {
                 name="name"
                 placeholder='Card name'
                 onChange={handleChange}
+                value={searchQuery.name}
                 className='input_field'
               />
             </div>
@@ -338,7 +401,7 @@ const SingleDeck = () => {
         : null
       }
 
-      {noResults ? <div>No results</div> : null}
+      {noResults ? <div className='text-2xl text-red-500'>No results</div> : null}
       {searching ? <div>...searching</div>: null}
 
       { cardData.length  
@@ -368,79 +431,33 @@ const SingleDeck = () => {
                 addCard={()=>addCard(card)}
                 removeCard={()=>removeCard(card)}
                 inDeck={false}
+                number={0}
               />  
             )}
           </section>
         : null
       }
-
-      <div className='flex flex-col justify-center items-center w-full sm:flex-row'>
-        <form
-          onSubmit={(e)=>e.preventDefault()}
-          className='text-black flex items-center gap-2 items-start p-2'
-        >
-            <label 
-              htmlFor='deckname'
-              className='min-w-max'
-            >
-              Deck name:
-            </label>
-            <input
-              id="deckname"
-              name="deckname"
-              placeholder="Deck name"
-              onChange={(e)=>setDeckName(e.target.value)}
-              value={deckName}
-              className="input_field"
-              maxLength={24}
-            ></input>
-        </form>      
-        <button 
-          type="button"
-          onClick={handleSaveDeck}
-          className='py-1 px-2 bg-red-300 rounded-2xl min-w-max'
-          disabled={savingDeck}
-        >
-          Save deck
-        </button>
-      </div>
       
+      <div className='flex gap-1 self-start justify-self-start items-center mt-4 ml-8 text-black'>
+        <Switch  
+            onChange={()=>{setViewMode(prev => !prev)}} 
+            checked={viewMode} 
+            checkedIcon={< TbCardsFilled className="w-full h-full p-1 text-white"/>}
+            uncheckedIcon={< BsFillGridFill className="w-full h-full p-1 text-white"/>}
+        />
+      </div>
 
-      <h3 className='mt-4'>Pokemon {sortedPokemon.length}</h3>
+      <h3 className='my-2 text-slate-800 font-bold text-2xl'>Pokemon {sortedPokemon.length}</h3>
       <section className="flex flex-wrap gap-4 justify-center ">
-        {sortedPokemon.map((card, index) => 
-          <DeckCards 
-            key={`${card.id}${index}`}
-            image={card.images.small}
-            addCard={()=>addCard(card)}
-            removeCard={()=>removeCard(card)}
-            inDeck={true}
-          />
-        )}
+        {displayedCards(sortedPokemon)}
       </section>
-      <h3>Trainers {sortedTrainers.length}</h3>
+      <h3 className='my-2 text-slate-800 font-bold text-2xl'>Trainers {sortedTrainers.length}</h3>
       <section className="flex flex-wrap gap-4 justify-center ">
-        {sortedTrainers.map((card, index) => 
-          <DeckCards 
-            key={`${card.id}${index}`}
-            image={card.images.small}
-            addCard={()=>addCard(card)}
-            removeCard={()=>removeCard(card)}
-            inDeck={true}
-          />
-        )}
+        {displayedCards(sortedTrainers)}
       </section>
-      <h3>Energy {sortedEnergy.length}</h3>
+      <h3 className='my-2 text-slate-800 font-bold text-2xl'>Energy {sortedEnergy.length}</h3>
       <section className="flex flex-wrap gap-4 justify-center ">
-        {sortedEnergy.map((card, index) => 
-          <DeckCards 
-            key={`${card.id}${index}`}
-            image={card.images.small}
-            addCard={()=>addCard(card)}
-            removeCard={()=>removeCard(card)}
-            inDeck={true}
-          />
-        )}
+        {displayedCards(sortedEnergy)}
       </section>
       {
         id != "newdeck" 
