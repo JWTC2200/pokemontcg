@@ -104,6 +104,8 @@ const Search = () => {
         try {
             const res = await fetch(`api/cards?${query.toString()}`) 
             const data = await res.json()
+            console.log(data)
+           
 
             if(!data.length) {
                 setCardData(data)

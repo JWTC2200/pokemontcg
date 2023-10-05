@@ -1,7 +1,7 @@
 "use client"
 
 import { useUser } from "@auth0/nextjs-auth0/client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { GiHamburgerMenu } from "react-icons/gi"
 import { BiSolidToTop } from "react-icons/bi"
@@ -12,19 +12,33 @@ const Nav = () => {
 
   const { user } = useUser()
   const [menuToggle, setMenuToggle] = useState(false)
+  const [scrollVis, setScrollVis] = useState(false)
 
+  useEffect(()=> {
+    const handleScrollVis = ()=> {
+      window.scrollY > screen.height ? setScrollVis(true) : setScrollVis(false)
+    }
+    window.addEventListener("scroll", handleScrollVis)
+    return ()=> {
+      window.addEventListener("scroll", handleScrollVis)
+    }
+  },[])
+ 
   const pathname = usePathname()
 
   const activeLink = "before:content-['-_'] after:content-['_-']"
 
   return (
     <nav className="relative w-full max-w-screen-2xl bg-slate-800 bg-opacity-75 px-8 py-12 flex justify-end sm:justify-between flex-wrap items-center text-end sm:text-left gap-4">
+
       <div className="pulse_bead bottom-0 left-20"></div>
       <div className="pulse_bead top-4 right-6"></div>
       <div className="pulse_bead top-1/2 right-1/2"></div>
+
       <Link href="/">
           <h1 className="text-2xl font-bold ">PTCG Deckbuilder</h1>
       </Link>
+
       <section className="md:flex gap-2 hidden">
         {user 
           ? <div className="flex gap-2">
@@ -56,6 +70,7 @@ const Nav = () => {
           : <Link className="" href="/api/auth/login">Login</Link>
         }      
       </section>
+
       <section className="md:hidden flex relative">
         { user
           ? <div>
@@ -107,9 +122,10 @@ const Nav = () => {
           </Link>
         }
       </section>
+      
       <button 
         type="button"
-        className="fixed text-4xl bg-slate-800 bg-opacity-75 rounded-full p-1 right-8 bottom-12"
+        className={`fixed text-4xl bg-slate-800 bg-opacity-75 rounded-full p-1 right-8 bottom-12 ${scrollVis ? "": "hidden"}`}
         onClick={()=>window.scrollTo({top:0, behavior:"smooth"})}
       >
         <BiSolidToTop/>
