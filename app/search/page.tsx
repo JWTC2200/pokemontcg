@@ -8,6 +8,7 @@ import Card from '@/components/Card'
 import { cardSubtypesList, cardRaritiesList, superTypes, pokemonTypes } from '@/data/carddata'
 import { CardSetContext } from '@/components/SetContext'
 import { IoMdClose, IoMdOpen } from "react-icons/io"
+import ReactPaginate from 'react-paginate'
 
 const Search = () => {
 
@@ -25,7 +26,18 @@ const Search = () => {
     const [noQuery, setNoQuery] = useState(false)
     const [firstLoad, setFirstLoad] = useState(true)
 
+    // pagination 
+    const itemsPerPage = 14
     const [cardData, setCardData] = useState<[PokemonTCG.Card]|[]>([])
+    const [itemOffset, setItemOffset] = useState(0)
+    const endOffset = itemOffset + itemsPerPage
+    const currentItems = cardData.slice(itemOffset, endOffset)
+    const pageCount = Math.ceil(cardData.length / itemsPerPage)
+    const handlePageClick = (e:any) => {
+        const newOffset = (e.selected * itemsPerPage) % cardData.length
+        setItemOffset(newOffset)
+    }
+
     const [searchQuery, setSearchQuery] = useState<TQuery>({
         name:"",
         regulationMark: "",
@@ -124,7 +136,7 @@ const Search = () => {
         }
     }
 
-    const dataEl = cardData.map(card => 
+    const dataEl = currentItems.map(card => 
         <Card
             key={card.id}
             {...card}
@@ -132,7 +144,7 @@ const Search = () => {
     )
 
     return (
-        <section className="page_container">
+        <section className="page_container relative">
             <form 
                 className='text-black flex flex-col items-start w-full p-2'
                 onSubmit={handleSubmit}
@@ -344,10 +356,24 @@ const Search = () => {
                 { hasSearched 
                     ?  searching 
                         ? <div className="text-yellow-600 text-xl mt-4">...loading</div>
-                        : dataEl.length ? dataEl : <div className="text-red-500 text-xl mt-4">No results</div>
+                        : dataEl.length 
+                            ? dataEl
+                            : <div className="text-red-500 text-xl mt-4">No results</div>
                     : null               
-                }                
+                }
+
             </section>
+            <ReactPaginate
+                breakLabel="..."
+                nextLabel=">"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={3}
+                pageCount={pageCount}
+                previousLabel="<"
+                renderOnZeroPageCount={null}
+                className='flex gap-4 text-black'
+                activeClassName='underline'
+            />
         </section>
     )
 }

@@ -29,7 +29,7 @@ const Nav = () => {
   const activeLink = "before:content-['-_'] after:content-['_-']"
 
   return (
-    <nav className="relative w-full max-w-screen-2xl bg-slate-800 bg-opacity-75 px-8 py-12 flex justify-end sm:justify-between flex-wrap items-center text-end sm:text-left gap-4">
+    <nav className="relative w-full max-w-screen-2xl bg-slate-800 bg-opacity-75 px-8 sm:py-12 p-4 flex justify-end sm:justify-between flex-wrap items-center text-end sm:text-left gap-4">
 
       <div className="pulse_bead bottom-0 left-20"></div>
       <div className="pulse_bead top-4 right-6"></div>
