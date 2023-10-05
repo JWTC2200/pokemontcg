@@ -35,7 +35,7 @@ const Search = () => {
     const [itemOffset, setItemOffset] = useState(0)
     const endOffset = itemOffset + itemsPerPage
     const currentItems = cardData.slice(itemOffset, endOffset)
-    const pageCount = Math.ceil(cardData.length / itemsPerPage)
+    const pageCount = Number(Math.ceil(Number(cardData.length) / Number(itemsPerPage)))
     const handlePageClick = (e:any) => {
         const newOffset = (e.selected * itemsPerPage) % cardData.length
         setItemOffset(newOffset)
