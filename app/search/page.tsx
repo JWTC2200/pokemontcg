@@ -8,9 +8,8 @@ import Card from '@/components/Card'
 import { cardSubtypesList, cardRaritiesList, superTypes, pokemonTypes } from '@/data/carddata'
 import { CardSetContext } from '@/components/SetContext'
 import { IoMdClose, IoMdOpen } from "react-icons/io"
-import { FaLessThan, FaGreaterThan } from "react-icons/fa"
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai'
-import ReactPaginate from 'react-paginate'
+import Pagination from '@/components/Pagination'
 
 const Search = () => {
 
@@ -30,17 +29,17 @@ const Search = () => {
     const [firstLoad, setFirstLoad] = useState(true)
 
     // pagination 
-    const [itemsPerPage, setItemsPerPage] = useState(10)
+    const itemsPerPage = 20
     const [cardData, setCardData] = useState<[PokemonTCG.Card]|[]>([])
     const [itemOffset, setItemOffset] = useState(0)
     const endOffset = itemOffset + itemsPerPage
     const currentItems = cardData.slice(itemOffset, endOffset)
     const pageCount = Math.ceil(cardData.length / itemsPerPage)
-    const handlePageClick = (e:any) => {
-        const newOffset = (e.selected * itemsPerPage) % cardData.length
+    const handlePageClick = (e:number) => {
+        const newOffset = (e * itemsPerPage) % cardData.length
         setItemOffset(newOffset)
     }
-
+    
     const [searchQuery, setSearchQuery] = useState<TQuery>({
         name:"",
         regulationMark: "",
@@ -145,7 +144,7 @@ const Search = () => {
     )
 
     return (
-        <section className="page_container relative">
+        <section className="page_container relative">           
             { toggleForm
                 ? <div
                 className='w-full bg-white text-black flex items-center mt-4 justify-between px-4 py-1 cursor-pointer'
@@ -373,25 +372,7 @@ const Search = () => {
                 ? <div className="text-red-500 text-xl mt-4">Please provide at least one search option!</div>
                 : null
             }
-            {dataEl.length 
-                ? <form className='nav_btn px-2 my-4 self-start ml-2 sm:self-center cursor-pointer'>
-                    <label htmlFor='cardsperpage'>Display:</label>
-                    <select 
-                        id="cardsperpage"
-                        name="cardsperpage"
-                        value={itemsPerPage}
-                        onChange={(e)=>setItemsPerPage(Number(e.target.value))}
-                        className='w-12 text-center bg-transparent'
-                    >
-                        <option value={10}>10</option>
-                        <option value={20}>20</option>
-                        <option value={30}>30</option>
-                        <option value={40}>40</option>
-                        <option value={50}>50</option>
-                    </select>
-                </form>
-                : null
-            }
+
             <section className='flex flex-wrap gap-4 justify-center pb-16 w-full'>            
                 { hasSearched 
                     ?  searching 
@@ -403,19 +384,11 @@ const Search = () => {
                 }
 
             </section>
-            <ReactPaginate
-                breakLabel="..."
-                nextLabel={<FaGreaterThan/>}
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={3}
-                marginPagesDisplayed={2}
+            <Pagination
                 pageCount={pageCount}
-                previousLabel={<FaLessThan/>}
-                renderOnZeroPageCount={null}
-                className='flex gap-2 text-black items-center font-semibold lg:text-xl'
-                activeClassName='underline'
-                disabledLinkClassName='opacity-25'
+                onPageChange={handlePageClick}
             />
+                    
         </section>
     )
 }
