@@ -373,7 +373,7 @@ const Search = () => {
                 : null
             }
 
-            <section className='flex flex-wrap gap-4 justify-center pb-16 w-full'>            
+            <section className='flex flex-wrap gap-4 mt-4 justify-center pb-16 w-full'>            
                 { hasSearched 
                     ?  searching 
                         ? <div className="text-yellow-600 text-xl mt-4">...loading</div>

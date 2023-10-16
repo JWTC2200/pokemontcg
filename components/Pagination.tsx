@@ -10,7 +10,7 @@ type TPagination = {
 
 const Pagination = ({pageCount, onPageChange}:TPagination) => {
 
-    const [activePage, setActivePage] = useState(1)    
+    const [activePage, setActivePage] = useState(0)    
 
     const pageCountArray = [...Array(pageCount).keys()].map(num => String(num))
     if (!pageCount) {
@@ -25,7 +25,7 @@ const Pagination = ({pageCount, onPageChange}:TPagination) => {
 
     return (
         <ul  
-            className='flex gap-2 text-black items-center font-semibold lg:text-xl cursor-pointer'          
+            className='flex gap-2 text-black items-center font-semibold lg:text-2xl cursor-pointer'          
         >
             <li                
                 onClick={activePage > 0 
@@ -38,15 +38,18 @@ const Pagination = ({pageCount, onPageChange}:TPagination) => {
             >
                 <FaLessThan/>
             </li>
-                {sortedPages.map(page => 
-                    <li
-                        key={page}
-                        onClick={()=>{
-                            onPageChange(Number(page))
-                            setActivePage(Number(page))
-                        }}
-                        className={page === String(activePage) ? "underline" : ""}
-                    >{Number(page) + 1}</li>    
+                {sortedPages.map(page => {
+                    const active = page === String(activePage) ? "underline" : ""    
+                    return  (
+                        <li
+                            key={page}
+                            onClick={()=>{
+                                onPageChange(Number(page))
+                                setActivePage(Number(page))
+                            }}
+                            className={`hover:text-red-400  ${active}`}
+                        >{Number(page) + 1}</li>  
+                    )}  
                 )}
             <li
                 onClick={activePage <= (pageCount - 2) 

@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { typeColors } from '@/data/carddata'
 import { energySymbols } from '@/app/utils/energyTypes'
 import { FaExternalLinkAlt } from "react-icons/fa"
-import addToDeck from '@/app/utils/deckstorage'
 
 type cardRegMark = PokemonTCG.Card & {regulationMark: string}
 
