@@ -3,8 +3,7 @@ import Link from "next/link"
 const Footer = () => {
   return (
     <footer className="w-full max-w-screen-2xl bg-slate-800 bg-opacity-75 mt-auto py-12 flex flex-col items-center justify-center">
-      <div>
-        
+      <div className="px-4 mx-auto">        
         <p>Data from the 
             <Link 
                 href="https://pokemontcg.io/"

@@ -4,14 +4,15 @@ type Tprops = {
     image: string,
     addCard: () => void
     removeCard: () => void
+    viewOverlay: () => void
     inDeck: boolean
     number: number
 }
 
-const DeckCards = ({image, addCard, removeCard, inDeck, number}: Tprops ) => {
+const DeckCards = ({image, addCard, removeCard, viewOverlay, inDeck, number}: Tprops ) => {
   return (
     <div
-        className='w-40 relative hover:scale-105 z-0'
+        className='w-40 relative hover:scale-105 z-0'        
     >   
         { number 
             ? <div 
@@ -24,6 +25,7 @@ const DeckCards = ({image, addCard, removeCard, inDeck, number}: Tprops ) => {
         <img
             src={image}
             className='cursor-pointer card_outline '
+            onClick={viewOverlay}
         />
         <div className="flex justify-center px-3 pt-2 text-amber-100 text-sm">
             {inDeck

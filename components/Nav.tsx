@@ -7,6 +7,7 @@ import { GiHamburgerMenu } from "react-icons/gi"
 import ToTopButton from "./ToTopButton"
 
 import { usePathname } from "next/navigation"
+import { link } from "fs"
 
 
 const Nav = () => {
@@ -17,7 +18,10 @@ const Nav = () => {
  
   const pathname = usePathname()
 
-  const activeLink = "before:content-['-_'] after:content-['_-']"
+  const activeLinkStyle = "border-b border-slate-50 hover:text-red-500 hover:border-red-500"
+  const linkStyle = "hover:text-red-500"
+
+  const hoverActiveLinkStyle = "border-b border-black hover:text-red-500 hover:border-red-500"
 
   return (
     <nav className="relative w-full max-w-screen-2xl bg-slate-800 bg-opacity-75 px-8 sm:py-12 p-4 flex justify-end sm:justify-between flex-wrap items-center text-end sm:text-left gap-4">
@@ -36,31 +40,31 @@ const Nav = () => {
         {user 
           ? <div className="flex gap-2">
             <Link 
-              className={pathname == "/search" ? activeLink : ""} 
+              className={pathname == "/search" ? activeLinkStyle : linkStyle} 
               href="/search"
             >
               Cards
             </Link>
             <Link 
-              className={pathname == "/cardsets" ? activeLink : ""} 
+              className={pathname == "/cardsets" ? activeLinkStyle : linkStyle} 
               href="/cardsets"
             >
               Sets
             </Link>
             <Link 
-              className={pathname == "/decks" ? activeLink : ""} 
+              className={pathname == "/decks" ? activeLinkStyle : linkStyle} 
               href="/decks"
             >
               Decks
             </Link>
             <Link 
-              className=""
+              className={linkStyle}
               href="/api/auth/logout"
             >
               Logout
             </Link>
           </div>
-          : <Link className="" href="/api/auth/login">Login</Link>
+          : <Link className={linkStyle} href="/api/auth/login">Login</Link>
         }      
       </section>
 
@@ -73,30 +77,30 @@ const Nav = () => {
               onClick={() => setMenuToggle((prev)=>!prev)}
             />
             { menuToggle 
-            ? <div className="absolute right-0 top-full mt-3 w-full p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2 justify-end items-end z-50">
+            ? <div className="absolute right-0 top-full mt-3 w-full p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2 justify-end items-end z-50 text-black">
               <Link
-                className="dropdown_link"
+                className={pathname == "/search" ? hoverActiveLinkStyle : linkStyle}
                 href="/search"
                 onClick={()=> setMenuToggle(false)}
               >
                 Card Search
               </Link> 
               <Link
-                className="dropdown_link"
+                className={pathname == "/cardsets" ? hoverActiveLinkStyle : linkStyle}
                 href="/cardsets"
                 onClick={()=> setMenuToggle(false)}
               >
                 Sets
               </Link>
               <Link
-                className="dropdown_link"
+                className={pathname == "/decks" ? hoverActiveLinkStyle : linkStyle}
                 href="/decks"
                 onClick={()=> setMenuToggle(false)}
               >
                 Decks
               </Link>
               <Link
-                className="dropdown_link mt-2 font-semibold text-lg"
+                className={linkStyle}
                 href="/api/auth/logout"
                 onClick={()=> setMenuToggle(false)}
               >

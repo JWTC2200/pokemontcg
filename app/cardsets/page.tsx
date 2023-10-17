@@ -32,7 +32,7 @@ const CardSets = () => {
                         <Link 
                             key={set.name+set.series}
                             href={`/search?setname=${set.name.replace("&", "%26")}&series=${set.series.replace("&", "%26")}`}
-                            className='hover:scale-110 w-60 h-40 p-2 bg-slate-200 rounded-2xl'
+                            className='hover:scale-110 w-60 h-40 p-2 bg-slate-200 rounded-2xl flex justify-center items-center'
                         >   
                             <div className='flex flex-col justify-center items-center text-center'>
                                 <img 
@@ -40,7 +40,7 @@ const CardSets = () => {
                                     className='h-20 mb-2 object-contain' 
                                     alt={`${set.name} logo`}
                                 />
-                                <h3 className='font-changa text-lg'>{set.name}</h3>
+                                <h3 className='font-josefin text-xl'>{set.name}</h3>
                             </div>                            
                         </Link>
                     )}
@@ -52,17 +52,17 @@ const CardSets = () => {
     const setIconTableEl = sortedSeries.map(series => {
         const seriesSets = sortedSets.filter(set => set.series === series)
         const setTableEl = seriesSets.map(set => 
-            <tr key={set.name+set.series} className='even:bg-gray-300 odd:bg-white py-1'>
+            <tr key={set.name+set.series} className='even:bg-slate-300 odd:bg-white py-1 hover:bg-gray-200'>
                 <td className='w-12 pl-2'><img src={set.images.symbol} className='h-8' alt={`${set.name} icon`}/></td>
                 <td className='w-52'>
                     <Link 
                         href={`/search?setname=${set.name.replace("&", "%26")}&series=${set.series.replace("&", "%26")}`}
-                        className='hover:text-red-500'
+                        className='hover:text-red-500 font-josefin text-lg'
                     >
                         {set.name}
                     </Link>
                 </td>
-                <td className='w-22 pr-2'>{set.printedTotal} cards</td>
+                <td className='w-22 pr-2 font-josefin text-lg'>{set.printedTotal} cards</td>
             </tr>
         )
         return (
@@ -89,6 +89,7 @@ const CardSets = () => {
                     checkedIcon={<BsTable className="w-full h-full p-1 text-white"/>}
                     uncheckedIcon={< BsFillGridFill className="w-full h-full p-1 text-white"/>}
                 />
+                <h4>{viewMode ? "List" : "Grid"}</h4>
             </div>  
             {!viewMode 
                 ? <div>{setIconGridEl}</div>

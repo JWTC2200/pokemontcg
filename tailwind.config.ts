@@ -30,7 +30,8 @@ const config: Config = {
     fontFamily: {
       sans: ["Inter", "sans-serif"],
       changa: ["Changa", "sans-serif"],
-      rye:["Rye", "sans-serif"]
+      rye:["Rye", "sans-serif"],
+      josefin:["'Josefin Sans'", "sans-sefif"],
     }
   },
   plugins: [],

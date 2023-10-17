@@ -9,12 +9,13 @@ import React, { useEffect, useState, useContext } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import DeckCards from '@/components/DeckCards'
 import { superTypes } from '@/data/carddata'
-import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai"
-import { BsFillGridFill } from "react-icons/bs"
+import { AiOutlinePlusCircle, AiOutlineMinusCircle, AiOutlineCloseCircle } from "react-icons/ai"
+import { BsFillGridFill, BsPencilFill } from "react-icons/bs"
 import {TbCardsFilled} from "react-icons/tb"
 import { addCardCheck } from '@/app/utils/editdeckchecks'
 import { useUser } from '@auth0/nextjs-auth0/client'
 import Switch from "react-switch"
+import Pagination from '@/components/Pagination'
 
 export const dynamic = "force-dynamic"
 export const revalidate = 0
@@ -24,19 +25,17 @@ const SingleDeck = () => {
   const router = useRouter()
   const { user } = useUser()
 
-  const [deckData, setDeckData] = useState<{}|TDeck>({})
   const [deckName, setDeckName] = useState("New deck")
   const [deckCards, setDeckCards] = useState<[] | Array<PokemonTCG.Card>>([])
   const [savingDeck, setSavingDeck] = useState(false)
   const [deleteDeck, setDeleteDeck] = useState(false)
   const [viewMode, setViewMode] = useState(true)
 
-  // card set data
   const AllCardSets = useContext(CardSetContext)
   const sortedCardSets = AllCardSets.sort(function(a,b){
       return Number(new Date(b.releaseDate)) - Number(new Date(a.releaseDate))
   })
-
+  
   const [searchQuery, setSearchQuery] = useState({
     name: "",
     setname: "",
@@ -48,6 +47,21 @@ const SingleDeck = () => {
   const [noResults, setNoResults] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [showResults, setShowResults] = useState(true)
+
+  // pagination
+  const itemsPerPage = 20
+  const [itemOffset, setItemOffset] = useState(0)
+  const endOffset = itemOffset + itemsPerPage
+  const currentItems = cardData.slice(itemOffset, endOffset)
+  const pageCount = Math.ceil(cardData.length / itemsPerPage)
+  const handlePageClick = (e:number) => {
+      const newOffset = (e * itemsPerPage) % cardData.length
+      setItemOffset(newOffset)
+  }
+
+  // view card
+  const [overlayCard , setOverlayCard ] = useState("")
+  const [showOverlayCard, setShowOverlayCard] = useState(false)
 
   const resetForm = ()=> {
     setSearchQuery({
@@ -211,7 +225,6 @@ const SingleDeck = () => {
           // redirect them if doesn't exist
           router.push("/decks")
         }
-        setDeckData(data[0])
         setDeckName(data[0].deckname)
         setDeckCards(data[0].cards)
       } catch (error) {
@@ -232,6 +245,7 @@ const SingleDeck = () => {
           image={card.images.small}
           addCard={()=>addCard(card)}
           removeCard={()=>removeCard(card)}
+          viewOverlay={()=>viewOverlay(card.images.large)}
           inDeck={true}
           number={0}
         />
@@ -250,11 +264,16 @@ const SingleDeck = () => {
           image={card.card.images.small}
           addCard={()=>addCard(card.card)}
           removeCard={()=>removeCard(card.card)}
+          viewOverlay={()=>viewOverlay(card.card.images.large)}
           inDeck={true}
           number={card.number}
         />
       ))
     }   
+  }
+  const viewOverlay = (image:string)=> {
+    setOverlayCard(image)
+    setShowOverlayCard(true)
   }
 
   return (
@@ -269,6 +288,23 @@ const SingleDeck = () => {
         newestOnTop
         pauseOnFocusLoss={false}
       />
+      
+      {showOverlayCard 
+        ? <section 
+          className='fixed w-screen h-screen bg-black z-20 bg-opacity-50 top-0 flex justify-center items-center'
+          onClick={()=>setShowOverlayCard(prev=>!prev)}
+        >
+          <div className='flex flex-col items-center justify-center p-8'>            
+            <img 
+              src={overlayCard}
+              className='w-auto max-w-md'
+            />
+            <AiOutlineCloseCircle className="text-4xl sm:text-6xl font-bold mt-4 hover:text-red-500"/>
+          </div>
+        </section>
+        : null
+      }
+
       <div className='flex flex-col justify-center items-center w-full sm:flex-row'>
         <form
           onSubmit={(e)=>e.preventDefault()}
@@ -280,9 +316,12 @@ const SingleDeck = () => {
             placeholder="Deck name"
             onChange={(e)=>setDeckName(e.target.value)}
             value={deckName}
-            className="w-full placeholder-gray-500 px-2 h-8 bg-transparent outline-none rounded-lg focus:bg-white"
+            className="w-full placeholder-gray-500 px-2 h-8 bg-transparent outline-none rounded-lg focus:bg-white text-center text-2xl"
             maxLength={24}
           />
+          <label htmlFor='deckname'>
+            <BsPencilFill/>
+          </label>          
         </form>      
         <button 
           type="button"
@@ -428,17 +467,24 @@ const SingleDeck = () => {
         : null
       }
       { cardData.length && showResults
-        ? <section className="flex flex-wrap gap-4 justify-center ">
-            {cardData.map(card => 
-              <DeckCards 
-                key={card.id}
-                image={card.images.small}
-                addCard={()=>addCard(card)}
-                removeCard={()=>removeCard(card)}
-                inDeck={false}
-                number={0}
-              />  
-            )}
+        ? <section className="flex flex-col justify-center items-center gap-2">
+            <div className="flex flex-wrap gap-4 justify-center">
+              {currentItems.map(card => 
+                <DeckCards 
+                  key={card.id}
+                  image={card.images.small}
+                  addCard={()=>addCard(card)}
+                  removeCard={()=>removeCard(card)}
+                  viewOverlay={()=>viewOverlay(card.images.large)}
+                  inDeck={false}
+                  number={0}
+                />  
+              )}
+            </div>
+            <Pagination
+              pageCount={pageCount}
+              onPageChange={handlePageClick}
+            />            
           </section>
         : null
       }
@@ -450,6 +496,7 @@ const SingleDeck = () => {
             checkedIcon={< TbCardsFilled className="w-full h-full p-1 text-white"/>}
             uncheckedIcon={< BsFillGridFill className="w-full h-full p-1 text-white"/>}
         />
+        <h4>{viewMode ? "Stacked": "Spread"}</h4>
       </div>
 
       <h3 className='my-2 text-slate-800 font-bold text-2xl'>Pokemon {sortedPokemon.length}</h3>
