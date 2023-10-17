@@ -3,7 +3,7 @@ import Link from "next/link"
 const Footer = () => {
   return (
     <footer className="w-full max-w-screen-2xl bg-slate-800 bg-opacity-75 mt-auto py-12 flex flex-col items-center justify-center">
-      <div className="px-4 mx-auto">        
+      <nav className="px-4 mx-auto">        
         <p>Data from the 
             <Link 
                 href="https://pokemontcg.io/"
@@ -32,13 +32,11 @@ const Footer = () => {
           PTCG Deckbuilder by 
           <Link
             href="https://jwtc2200.netlify.app/"
-            className="text-emerald-400 ml-1 underline hover:text-red-400"
+            className="text-emerald-400 mx-1 underline hover:text-red-400"
           >
             Jun Chan 
           </Link>
-        </p>
-        <p>
-          Take a look at my
+          and my 
           <Link
             href="https://github.com/JWTC2200/pokemontcg"
             className="text-emerald-400 ml-1 underline hover:text-red-400"
@@ -47,7 +45,15 @@ const Footer = () => {
           </Link>
         </p>
         <p>This website is not affiliated with The Pokémon Company in any way</p>
-      </div>
+        <p>If you have any recommendations or noticed any bugs please let me know
+          <Link
+            href="/contact"
+            className="text-emerald-400 ml-1 underline hover:text-red-400"
+          >
+            here
+          </Link>
+        </p>
+      </nav>
     </footer>
   )
 }

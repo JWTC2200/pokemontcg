@@ -81,7 +81,7 @@ const CardSets = () => {
     })
 
     return (
-        <section className='page_container text-black'>
+        <main className='page_container text-black'>
             <div className='flex gap-1 self-start justify-self-start items-center mb-4 ml-8'>
                 <Switch  
                     onChange={()=>{setViewMode(prev => !prev)}} 
@@ -92,10 +92,10 @@ const CardSets = () => {
                 <h4>{viewMode ? "List" : "Grid"}</h4>
             </div>  
             {!viewMode 
-                ? <div>{setIconGridEl}</div>
-                : <div className='flex flex-wrap items-start justify-center sm:gap-2 gap-4'>{setIconTableEl}</div>
+                ? <section>{setIconGridEl}</section>
+                : <section className='flex flex-wrap items-start justify-center sm:gap-2 gap-4'>{setIconTableEl}</section>
             }                         
-        </section>
+        </main>
     )
 }
 

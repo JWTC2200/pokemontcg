@@ -144,7 +144,7 @@ const Search = () => {
     )
 
     return (
-        <section className="page_container relative">           
+        <main className="page_container relative">           
             { toggleForm
                 ? <div
                 className='w-full bg-white text-black flex items-center mt-4 justify-between px-4 py-1 cursor-pointer'
@@ -389,7 +389,7 @@ const Search = () => {
                 onPageChange={handlePageClick}
             />
                     
-        </section>
+        </main>
     )
 }
 

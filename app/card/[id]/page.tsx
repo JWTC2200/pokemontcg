@@ -39,7 +39,7 @@ const SingleCard = () => {
     }
 
     return (
-        <section className='page_container'>
+        <main className='page_container'>
             {cardData
             ? <div className="flex flex-col lg:flex-row w-full gap-8 px-2 sm:px-8 lg:px-0 xl:px-4 2xl:px-12">
                 <section className="w-full flex flex-col justify-center items-center bg-gray-200 bg-opacity-10 rounded-lg">
@@ -194,7 +194,7 @@ const SingleCard = () => {
             
         
             }
-        </section>
+        </main>
     )
 }
 

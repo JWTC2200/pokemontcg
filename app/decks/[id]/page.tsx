@@ -277,7 +277,7 @@ const SingleDeck = () => {
   }
 
   return (
-    <div
+    <main
         className='page_container'
     > 
       <ToastContainer
@@ -542,7 +542,7 @@ const SingleDeck = () => {
         
         : null
       }
-    </div>
+    </main>
   )
 }
 

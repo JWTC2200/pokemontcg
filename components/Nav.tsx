@@ -14,13 +14,10 @@ const Nav = () => {
 
   const { user } = useUser()
   const [menuToggle, setMenuToggle] = useState(false)
-
- 
   const pathname = usePathname()
 
   const activeLinkStyle = "border-b border-slate-50 hover:text-red-500 hover:border-red-500"
   const linkStyle = "hover:text-red-500"
-
   const hoverActiveLinkStyle = "border-b border-black hover:text-red-500 hover:border-red-500"
 
   return (
@@ -43,7 +40,7 @@ const Nav = () => {
               className={pathname == "/search" ? activeLinkStyle : linkStyle} 
               href="/search"
             >
-              Cards
+              Search
             </Link>
             <Link 
               className={pathname == "/cardsets" ? activeLinkStyle : linkStyle} 
@@ -83,7 +80,7 @@ const Nav = () => {
                 href="/search"
                 onClick={()=> setMenuToggle(false)}
               >
-                Card Search
+                Search
               </Link> 
               <Link
                 className={pathname == "/cardsets" ? hoverActiveLinkStyle : linkStyle}

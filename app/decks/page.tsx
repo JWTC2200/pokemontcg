@@ -41,7 +41,7 @@ const Decks = () => {
         return (
             <tr 
                 key={deck.created_at}
-                className='even:bg-gray-300 odd:bg-white py-1 text-black font-josefin'
+                className='even:bg-slate-300 odd:bg-white py-1 text-black font-josefin hover:bg-gray-200'
             >
                 <td className="pl-3">
                     <Link
@@ -59,7 +59,7 @@ const Decks = () => {
         
 
     return(
-        <div className="page_container">          
+        <main className="page_container">          
             <Link
                 href="/decks/newdeck"
                 className="mb-4 bg-black py-1 px-4 rounded-xl cursor-pointer font-semibold text-xl text-slate-300 font-josefin"
@@ -68,7 +68,7 @@ const Decks = () => {
             </Link>
             {!deckData.length 
                 ? <h2 className="self-center justify-self-center text-red-700 text-4xl font-bold">You have no decks!</h2>
-                : <table className="w-full table-auto">
+                : <table className="w-full table-auto leading-10">
                     <thead className="sm:text-lg text-md bg-gray-800 text-white font-rye h-12">
                         <tr>
                             <th className="text-start pl-3">Deck</th>
@@ -84,7 +84,7 @@ const Decks = () => {
             }
             
             
-        </div>
+        </main>
     )
 }
 

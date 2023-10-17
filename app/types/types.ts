@@ -29,3 +29,8 @@ export type TDeck = {
     cards: [PokemonTCG.Card]
     created_at: string
 }
+
+export type ContactFormData = {
+    email: string
+    message: string
+}

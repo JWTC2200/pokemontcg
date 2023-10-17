@@ -16,7 +16,7 @@ const DeckCards = ({image, addCard, removeCard, viewOverlay, inDeck, number}: Tp
     >   
         { number 
             ? <div 
-                className='absolute bottom-1/4 left-1/2 text-4xl font-bold text-red-700 -translate-x-1/2 stroke-black bg-white bg-opacity-20 rounded-full'
+                className='absolute bottom-1/4 left-1/2 text-3xl font-bold text-red-700 -translate-x-1/2 stroke-black bg-white bg-opacity-75 w-12 h-12 rounded-full flex justify-center items-center'
             >
                 x{number}
             </div>
