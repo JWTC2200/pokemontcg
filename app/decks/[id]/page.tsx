@@ -305,7 +305,7 @@ const SingleDeck = () => {
         : null
       }
 
-      <div className='flex flex-col justify-center items-center w-full sm:flex-row'>
+      <div className='flex flex-col justify-center items-center w-full'>
         <form
           onSubmit={(e)=>e.preventDefault()}
           className='text-black flex items-center gap-2 items-start p-2'
@@ -316,7 +316,7 @@ const SingleDeck = () => {
             placeholder="Deck name"
             onChange={(e)=>setDeckName(e.target.value)}
             value={deckName}
-            className="w-full placeholder-gray-500 px-2 h-8 bg-transparent outline-none rounded-lg focus:bg-white text-center text-2xl"
+            className="w-full placeholder-gray-500 px-2 h-8 bg-white bg-opacity-50 outline-none rounded-lg focus:bg-white text-center text-2xl"
             maxLength={24}
           />
           <label htmlFor='deckname'>
@@ -326,7 +326,7 @@ const SingleDeck = () => {
         <button 
           type="button"
           onClick={handleSaveDeck}
-          className='py-1 px-2 bg-green-400 text-black rounded-2xl min-w-max'
+          className='py-1 px-2 bg-green-400 text-black rounded-2xl mt-2 min-w-max'
           disabled={savingDeck}
         >
           Save deck
