@@ -10,7 +10,7 @@ export async function POST(req:NextRequest ) {
   const props = await req.json()
   try {
     const data = await resend.emails.send({
-      from: 'pokemon@jwtc2200.com',
+      from: from,
       to: [contact,],
       subject: 'PokemonTCG Feedback',
       react: EmailTemplate(props) as React.ReactElement,
