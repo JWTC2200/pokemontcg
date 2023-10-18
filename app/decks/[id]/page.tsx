@@ -297,7 +297,7 @@ const SingleDeck = () => {
           <div className='flex flex-col items-center justify-center p-8'>            
             <img 
               src={overlayCard}
-              className='w-auto max-w-md'
+              className='w-auto max-w-sm px-8'
             />
             <AiOutlineCloseCircle className="text-4xl sm:text-6xl font-bold mt-4 hover:text-red-500"/>
           </div>
