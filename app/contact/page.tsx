@@ -8,6 +8,7 @@ import { useUser } from "@auth0/nextjs-auth0/client"
 const page = () => {
 
     const [emailSuccess, setEmailSuccess] = useState(false)
+    const [sending, setSending] = useState(false)
     const router = useRouter()
     const { user } = useUser()
 
@@ -42,19 +43,24 @@ const page = () => {
     const handleFormSubmit = async (e:React.SyntheticEvent) => {
         e.preventDefault()
         setEmailSuccess(false)
+        setSending(true)
+        console.log(1232)
         try {
             const res = await fetch('api/send', {
                 method: "POST",
                 body: JSON.stringify(formData)
             })
             const data = await res.json()
-            console.log(data)
             if( data.id ) {
                 setEmailSuccess(true)
-                setTimeout(()=>{router.replace("/")}, 2000)
+                setTimeout(()=>{
+                    router.replace("/")
+                    setSending(false)
+                }, 2000)
             } 
         } catch (error) {
             console.log(error)
+            setSending(false)
         }
     }
 
@@ -94,6 +100,7 @@ const page = () => {
                 <button 
                     type="submit" 
                     className='text-white text-xl bg-black ml-2 px-3 py-1 rounded-xl gap-2 flex items-center cursor-pointer mt-4'
+                    disabled={sending? true: false}
                 >
                     Submit
                 </button>
