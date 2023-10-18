@@ -48,6 +48,7 @@ const page = () => {
                 body: JSON.stringify(formData)
             })
             const data = await res.json()
+            console.log(data)
             if( data.id ) {
                 setEmailSuccess(true)
                 setTimeout(()=>{router.replace("/")}, 2000)
