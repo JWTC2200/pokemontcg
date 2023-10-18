@@ -10,6 +10,4 @@ In progress:
 
 More search fields
 
-Improve deckbuilding
-
-Issue with react-paginate 
+Improve deckbuilding 
