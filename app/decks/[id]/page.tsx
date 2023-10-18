@@ -294,10 +294,10 @@ const SingleDeck = () => {
           className='fixed w-screen h-screen bg-black z-20 bg-opacity-50 top-0 flex justify-center items-center'
           onClick={()=>setShowOverlayCard(prev=>!prev)}
         >
-          <div className='flex flex-col items-center justify-center p-8'>            
+          <div className='flex flex-col items-center justify-center w-full px-8'>            
             <img 
               src={overlayCard}
-              className='w-auto max-w-sm px-8'
+              className='max-w-full sm:max-w-md'
             />
             <AiOutlineCloseCircle className="text-4xl sm:text-6xl font-bold mt-4 hover:text-red-500"/>
           </div>
