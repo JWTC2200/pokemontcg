@@ -167,9 +167,9 @@ const SingleDeck = () => {
           }),
         });
         if (res.ok) {
-          console.log("deck saved");
+          toast.success("Deck saved!");
         } else {
-          console.log("save failed");
+          toast.error("Save failed");
         }
         const data = await res.json();
         router.replace(`/decks/${data.data[0].id}`);
@@ -188,9 +188,9 @@ const SingleDeck = () => {
           }),
         });
         if (res.ok) {
-          toast.success("deck saved!");
+          toast.success("Deck saved!");
         } else {
-          toast.error("save failed");
+          toast.error("Save failed");
         }
       } catch (error) {
         console.log(error);
